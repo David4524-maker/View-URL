@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>View URL · Mira el código de cualquier web</title>
+<meta name="description" content="View URL — visor del código fuente (HTML, CSS, JS) de cualquier página web. App de escritorio en Python 3.14 + demo web en vivo." />
+<meta name="theme-color" content="#0b0f14" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%231f6feb'/%3E%3Ctext x='50' y='68' font-family='monospace' font-size='52' fill='white' text-anchor='middle'%3E%3C/%3E%3C/text%3E%3C/svg%3E" />
+<style>
+  :root{
+    --bg:#0b0f14; --panel:#0d1117; --panel-2:#0f1520; --border:#1e2937;
+    --text:#c9d1d9; --muted:#8b949e; --accent:#58a6ff; --accent-2:#7c3aed;
+    --ok:#3fb950; --err:#f85149; --warn:#d29922;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+            "Liberation Mono", monospace;
+    --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+            Helvetica, Arial, sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:
+      radial-gradient(1200px 560px at 12% -10%, #12203a 0%, transparent 60%),
+      radial-gradient(900px 420px at 100% 0%, #1c1235 0%, transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.6;
+    min-height:100vh;
+  }
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  code,kbd,pre{font-family:var(--mono)}
+
+  /* ─── layout ─── */
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+  header.nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 0;gap:16px;flex-wrap:wrap;
+  }
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{
+    width:42px;height:42px;border-radius:12px;display:grid;place-items:center;
+    background:linear-gradient(135deg,#1f6feb,#7c3aed);color:#fff;
+    font-family:var(--mono);font-weight:700;font-size:15px;
+    box-shadow:0 8px 24px rgba(31,111,235,.35);
+  }
+  .brand h1{font-size:18px;margin:0;letter-spacing:.2px}
+  .brand p{margin:0;font-size:12px;color:var(--muted)}
+  nav.links{display:flex;gap:6px;flex-wrap:wrap}
+  nav.links a{
+    color:var(--muted);font-size:13px;padding:7px 12px;border-radius:8px;
+    border:1px solid transparent;transition:.15s;
+  }
+  nav.links a:hover{color:var(--text);border-color:var(--border);
+    background:#111823;text-decoration:none}
+
+  /* ─── hero ─── */
+  .hero{padding:38px 0 12px;text-align:center}
+  .badge{
+    display:inline-flex;align-items:center;gap:8px;
+    border:1px solid var(--border);background:#0d1117;
+    color:var(--muted);font-size:12px;padding:6px 14px;
+    border-radius:99px;font-family:var(--mono);
+  }
+  .badge .dot{width:8px;height:8px;border-radius:50%;
+    background:var(--ok);box-shadow:0 0 10px var(--ok)}
+  .hero h2{
+    font-size:clamp(28px,5vw,44px);line-height:1.15;margin:18px 0 12px;
+    letter-spacing:-.5px;
+  }
+  .hero h2 span{
+    background:linear-gradient(135deg,#58a6ff,#a78bfa);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero p.lead{
+    max-width:640px;margin:0 auto;color:var(--muted);font-size:16px;
+  }
+  .cta{display:flex;gap:10px;justify-content:center;margin-top:24px;flex-wrap:wrap}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:11px 20px;border-radius:10px;font-size:14px;font-weight:600;
+    border:1px solid var(--border);background:#161b22;color:var(--text);
+    cursor:pointer;transition:.15s;font-family:inherit;
+  }
+  .btn:hover{background:#1b2230;border-color:#30475f;text-decoration:none}
+  .btn.primary{
+    background:linear-gradient(135deg,#1f6feb,#3b82f6);
+    border-color:#1f6feb;color:#fff;
+  }
+  .btn.primary:hover{filter:brightness(1.12)}
+
+  /* ─── tarjetas de pestaña ─── */
+  .tabs{
+    display:flex;gap:6px;margin:44px 0 0;flex-wrap:wrap;
+    border-bottom:1px solid var(--border);padding-bottom:2px;
+  }
+  .tabs button{
+    background:transparent;border:none;color:var(--muted);
+    padding:11px 16px;font-size:14px;font-family:inherit;cursor:pointer;
+    border-bottom:2px solid transparent;transition:.15s;border-radius:8px 8px 0 0;
+  }
+  .tabs button:hover{color:var(--text);background:#111823}
+  .tabs button.active{
+    color:var(--text);border-bottom-color:var(--accent);background:#0f1520;
+  }
+
+  section.pane{display:none;padding:26px 0 60px}
+  section.pane.active{display:block;animation:fade .25s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+  /* ─── demo ─── */
+  .demo-bar{display:flex;gap:8px;flex-wrap:wrap}
+  .demo-bar input{
+    flex:1;min-width:220px;padding:12px 14px;border-radius:10px;
+    border:1px solid var(--border);background:#0a0e13;color:var(--text);
+    font-family:var(--mono);font-size:13px;outline:none;transition:.15s;
+  }
+  .demo-bar input:focus{border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(88,166,255,.15)}
+  .demo-bar select{
+    padding:11px 12px;border-radius:10px;border:1px solid var(--border);
+    background:#161b22;color:var(--text);font-size:13px;font-family:inherit;
+    cursor:pointer;
+  }
+  .status{
+    display:flex;align-items:center;gap:8px;margin:14px 0 8px;
+    font-size:12.5px;color:var(--muted);min-height:20px;
+  }
+  .status .sdot{width:8px;height:8px;border-radius:50%;
+    background:#374151;flex:0 0 auto}
+  .status.ok .sdot{background:var(--ok);box-shadow:0 0 10px var(--ok)}
+  .status.err .sdot{background:var(--err);box-shadow:0 0 10px var(--err)}
+  .status.load .sdot{background:var(--warn);animation:pulse 1s infinite}
+  @keyframes pulse{50%{opacity:.25}}
+
+  .demo-tabs{
+    display:flex;gap:4px;border-bottom:1px solid var(--border);
+    padding:0 4px;margin-top:14px;flex-wrap:wrap;
+  }
+  .demo-tabs button{
+    background:transparent;border:none;color:var(--muted);
+    padding:9px 12px;font-size:12.5px;font-family:inherit;cursor:pointer;
+    border-bottom:2px solid transparent;transition:.15s;
+  }
+  .demo-tabs button:hover{color:var(--text);background:#111823}
+  .demo-tabs button.active{
+    color:var(--text);border-bottom-color:var(--accent);background:#0f1520;
+  }
+  .demo-tabs button em{
+    font-style:normal;font-size:10px;background:#1f2937;color:var(--muted);
+    padding:1px 6px;border-radius:99px;margin-left:5px;
+  }
+  .demo-tabs .spacer{flex:1}
+  .demo-tabs .ghost{
+    font-size:12px;padding:7px 11px;border-radius:8px;
+    border:1px solid var(--border);color:var(--muted);background:#111823;
+    cursor:pointer;font-family:inherit;transition:.15s;
+  }
+  .demo-tabs .ghost:hover{color:var(--text);border-color:#30475f}
+
+  .viewer{
+    background:var(--panel);border:1px solid var(--border);
+    border-top:none;border-radius:0 0 12px 12px;
+    display:flex;min-height:380px;max-height:520px;overflow:hidden;
+  }
+  .gutter{
+    flex:0 0 auto;padding:14px 10px 14px 14px;text-align:right;
+    color:#39465a;background:#0a0e13;border-right:1px solid var(--border);
+    white-space:pre;overflow:hidden;font:12.5px/1.65 var(--mono);
+    user-select:none;
+  }
+  .gutter[hidden]{display:none}
+  pre.code{
+    flex:1;margin:0;padding:14px;overflow:auto;white-space:pre;tab-size:2;
+    font:12.5px/1.65 var(--mono);color:var(--text);
+  }
+  pre.code[hidden]{display:none}
+  pre.code.wrap{white-space:pre-wrap;word-break:break-word}
+  .panel-body{
+    flex:1;overflow:auto;padding:18px 22px;font-size:13px;
+  }
+  .panel-body[hidden]{display:none}
+  .panel-body h3{
+    font-size:12px;text-transform:uppercase;letter-spacing:1.2px;
+    color:var(--muted);margin:20px 0 10px;font-weight:600;
+  }
+  .panel-body h3:first-child{margin-top:0}
+  .panel-body h3 em{
+    font-style:normal;background:#1f2937;color:#9aa7b6;padding:1px 7px;
+    border-radius:99px;font-size:11px;margin-left:6px;
+  }
+  .panel-body ul{list-style:none;margin:0;padding:0;
+    display:flex;flex-direction:column;gap:6px}
+  .panel-body li{
+    background:var(--panel-2);border:1px solid var(--border);
+    border-radius:8px;padding:8px 12px;font-family:var(--mono);
+    font-size:12px;word-break:break-all;display:flex;gap:10px;
+    align-items:baseline;
+  }
+  .panel-body li .tag{
+    color:var(--muted);font-size:10.5px;border:1px solid var(--border);
+    padding:1px 6px;border-radius:99px;flex:0 0 auto;
+  }
+  .kv{display:grid;grid-template-columns:170px 1fr;gap:8px 14px;font-size:12.5px}
+  .kv dt{color:var(--muted)}
+  .kv dd{margin:0;font-family:var(--mono);word-break:break-all}
+  .empty{color:var(--muted);font-size:13px;padding:8px 0}
+
+  /* colores de sintaxis */
+  .c-com{color:#6b7a8d;font-style:italic}
+  .c-tag{color:#7ee787}
+  .c-attr{color:#79c0ff}
+  .c-str{color:#a5d6ff}
+  .c-punc{color:#7d8590}
+  .c-doc{color:#8b949e}
+  .c-prop{color:#79c0ff}
+  .c-at{color:#ff7b72}
+  .c-num{color:#f0883e}
+  .c-kw{color:#ff7b72}
+
+  /* ─── instalación / código ─── */
+  .grid-2{display:grid;grid-template-columns:1fr;gap:18px}
+  @media (min-width:820px){.grid-2{grid-template-columns:1fr 1fr}}
+  .card{
+    background:var(--panel);border:1px solid var(--border);
+    border-radius:12px;padding:20px 22px;
+  }
+  .card h3{margin:0 0 8px;font-size:15px}
+  .card p{color:var(--muted);font-size:13.5px;margin:0 0 12px}
+  .card ol,.card ul{margin:0;padding-left:20px;color:var(--text);font-size:13.5px}
+  .card li{margin:6px 0}
+  .step{
+    display:inline-flex;align-items:center;justify-content:center;
+    width:22px;height:22px;border-radius:50%;font-size:12px;
+    background:#1f2937;color:var(--accent);font-family:var(--mono);
+    margin-right:6px;font-weight:700;
+  }
+  pre.snippet{
+    background:#0a0e13;border:1px solid var(--border);border-radius:10px;
+    padding:14px 16px;overflow:auto;font-size:12.5px;color:var(--text);
+    margin:12px 0 0;line-height:1.5;
+  }
+  .copy-mini{
+    float:right;background:#161b22;border:1px solid var(--border);
+    color:var(--muted);font-size:11px;padding:3px 9px;border-radius:6px;
+    cursor:pointer;font-family:inherit;
+  }
+  .copy-mini:hover{color:var(--text);border-color:#30475f}
+  kbd{
+    background:#161b22;border:1px solid var(--border);border-bottom-width:2px;
+    border-radius:6px;padding:1px 6px;font-size:12px;color:var(--text);
+  }
+
+  /* ─── features ─── */
+  .features{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:14px;margin-top:20px;
+  }
+  .feature{
+    background:var(--panel);border:1px solid var(--border);
+    border-radius:12px;padding:16px 18px;transition:.15s;
+  }
+  .feature:hover{border-color:#30475f;transform:translateY(-2px)}
+  .feature h4{margin:0 0 4px;font-size:14px}
+  .feature p{margin:0;color:var(--muted);font-size:12.5px}
+  .feature .ic{
+    width:32px;height:32px;border-radius:9px;display:grid;place-items:center;
+    background:#111c2c;border:1px solid #1e3a5f;color:var(--accent);
+    font-family:var(--mono);font-size:14px;margin-bottom:10px;
+  }
+
+  /* ─── footer ─── */
+  footer{
+    border-top:1px solid var(--border);margin-top:40px;
+    padding:24px 0 40px;text-align:center;color:var(--muted);font-size:13px;
+  }
+  footer .row{
+    display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:8px;
+  }
+  footer a{color:var(--muted)}
+  footer a:hover{color:var(--accent)}
+
+  /* scrollbars */
+  ::-webkit-scrollbar{width:11px;height:11px}
+  ::-webkit-scrollbar-track{background:#0a0e13}
+  ::-webkit-scrollbar-thumb{background:#243043;border-radius:8px;
+    border:2px solid #0a0e13}
+  ::-webkit-scrollbar-thumb:hover{background:#31465f}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- ══════════════════ nav ══════════════════ -->
+  <header class="nav">
+    <div class="brand">
+      <span class="logo">&lt;/&gt;</span>
+      <div>
+        <h1>View URL</h1>
+        <p>Mira el código de cualquier web</p>
+      </div>
+    </div>
+    <nav class="links">
+      <a href="#demo">Demo en vivo</a>
+      <a href="#instalar">Instalar</a>
+      <a href="#features">Características</a>
+      <a href="https://github.com/" target="_blank" rel="noopener">GitHub ↗</a>
+    </nav>
+  </header>
+
+  <!-- ══════════════════ hero ══════════════════ -->
+  <section class="hero">
+    <span class="badge"><span class="dot"></span> Python 3.14 · Solo biblioteca estándar</span>
+    <h2>El código de <span>cualquier web</span><br>en una sola ventana</h2>
+    <p class="lead">
+      <strong>View URL</strong> es un visor de código fuente HTML, CSS y JavaScript
+      con resaltado de sintaxis. Pruébalo aquí mismo o descarga la app de escritorio
+      escrita en Python puro.
+    </p>
+    <div class="cta">
+      <a class="btn primary" href="#demo">Probar demo web</a>
+      <a class="btn" href="#instalar">Instalar la app</a>
+    </div>
+  </section>
+
+  <!-- ══════════════════ pestañas ══════════════════ -->
+  <div class="tabs" role="tablist">
+    <button data-pane="demo" class="active" role="tab">🌐 Demo en vivo</button>
+    <button data-pane="instalar" role="tab">🐍 Instalar (Python)</button>
+    <button data-pane="features" role="tab">✨ Características</button>
+  </div>
+
+  <!-- ══════════════════ DEMO ══════════════════ -->
+  <section id="demo" class="pane active" role="tabpanel">
+    <div class="demo-bar">
+      <input id="url" type="text" placeholder="https://example.com" spellcheck="false" />
+      <button class="btn primary" id="go">Ver código</button>
+      <select id="proxy" title="Servidor intermedio para saltar el CORS">
+        <option value="allorigins">Proxy: AllOrigins</option>
+        <option value="codetabs">Proxy: CodeTabs</option>
+        <option value="corsproxy">Proxy: corsproxy.io</option>
+        <option value="none">Sin proxy (directo)</option>
+      </select>
+    </div>
+
+    <div class="status" id="status">
+      <span class="sdot"></span>
+      <span id="statusText">Escribe una URL y pulsa «Ver código».</span>
+    </div>
+
+    <div class="demo-tabs">
+      <button data-tab="html" class="active">HTML <em id="cHtml">0</em></button>
+      <button data-tab="css">CSS <em id="cCss">0</em></button>
+      <button data-tab="js">JS <em id="cJs">0</em></button>
+      <button data-tab="recursos">Recursos <em id="cRes">0</em></button>
+      <button data-tab="info">Info</button>
+      <span class="spacer"></span>
+      <button type="button" class="ghost" id="wrapBtn">↵ Ajustar</button>
+      <button type="button" class="ghost" id="copyBtn">Copiar</button>
+      <button type="button" class="ghost" id="dlBtn">Descargar</button>
+      <a class="ghost" id="openBtn" href="#" target="_blank" rel="noopener" hidden
+         style="text-decoration:none">Abrir web ↗</a>
+    </div>
+
+    <div class="viewer">
+      <div class="gutter" id="gutter"></div>
+      <pre class="code" id="code"><span class="c-com">// View URL — introduce una dirección arriba y pulsa «Ver código».</span></pre>
+      <div class="panel-body" id="panel" hidden></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════ INSTALAR ══════════════════ -->
+  <section id="instalar" class="pane" role="tabpanel">
+    <div class="grid-2">
+      <div class="card">
+        <h3>🐍 App de escritorio (Python 3.14)</h3>
+        <p>Visor nativo con Tkinter. Sin dependencias externas, sin <code>pip install</code>.</p>
+        <ol>
+          <li><span class="step">1</span>Instala <strong>Python 3.14</strong> desde
+            <a href="https://www.python.org/downloads/" target="_blank" rel="noopener">python.org</a>.
+          </li>
+          <li><span class="step">2</span>Guarda el archivo <code>view_url.py</code> (ver abajo).</li>
+          <li><span class="step">3</span>Abre <strong>IDLE</strong> → <kbd>File</kbd> → <kbd>Open…</kbd>.</li>
+          <li><span class="step">4</span>Pulsa <kbd>F5</kbd> para ejecutar.</li>
+        </ol>
+        <pre class="snippet" id="snippet-1"><button class="copy-mini" data-copy="snippet-1">copiar</button># Clona el repositorio y ejecuta:
+git clone https://github.com/TU_USUARIO/view-url.git
+cd view-url
+python view_url.py</pre>
+      </div>
+
+      <div class="card">
+        <h3>🌐 Demo web (esta página)</h3>
+        <p>Funciona directamente en el navegador. Para saltar las restricciones CORS usa un proxy público.</p>
+        <ul>
+          <li><strong>AllOrigins</strong> — el más estable.</li>
+          <li><strong>CodeTabs</strong> — buena velocidad.</li>
+          <li><strong>corsproxy.io</strong> — alternativa.</li>
+        </ul>
+        <p style="margin-top:12px">Si un proxy falla, prueba con otro desde el selector.</p>
+        <pre class="snippet"><button class="copy-mini" data-copy="snippet-2">copiar</button><span id="snippet-2"># Cómo publicar esta página en GitHub Pages
+1. Crea un repo nuevo en GitHub
+2. Sube index.html a la raíz
+3. Settings → Pages → Branch: main / (root)
+4. Espera ~1 min. Tu URL: https://TU_USUARIO.github.io/view-url/</span></pre>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:18px">
+      <h3>📄 Código fuente Python</h3>
+      <p>
+        La versión completa del visor de escritorio está en el repositorio.
+        Incluye resaltado de sintaxis, pestañas HTML/CSS/JS, panel de recursos
+        y resumen de metadatos.
+      </p>
+      <pre class="snippet"><button class="copy-mini" data-copy="snippet-3">copiar</button><span id="snippet-3">view-url/
+├── index.html      ← esta página (GitHub Pages)
+├── view_url.py     ← app de escritorio (Python 3.14)
+└── README.md</span></pre>
+    </div>
+  </section>
+
+  <!-- ══════════════════ FEATURES ══════════════════ -->
+  <section id="features" class="pane" role="tabpanel">
+    <div class="features">
+      <div class="feature">
+        <div class="ic">&lt;/&gt;</div>
+        <h4>Resaltado de sintaxis</h4>
+        <p>HTML, CSS y JavaScript con colores, sin librerías externas.</p>
+      </div>
+      <div class="feature">
+        <div class="ic">{ }</div>
+        <h4>Pestañas separadas</h4>
+        <p>HTML, CSS, JS, recursos e info, cada uno en su propia vista.</p>
+      </div>
+      <div class="feature">
+        <div class="ic">⤓</div>
+        <h4>Descarga y copia</h4>
+        <p>Guarda el código de la pestaña activa o cópialo al portapapeles.</p>
+      </div>
+      <div class="feature">
+        <div class="ic">🔗</div>
+        <h4>Recursos clicables</h4>
+        <p>Lista de hojas de estilo, scripts, imágenes y enlaces.</p>
+      </div>
+      <div class="feature">
+        <div class="ic">⚡</div>
+        <h4>Sin dependencias</h4>
+        <p>Solo biblioteca estándar. Sin <code>pip</code>, sin frameworks.</p>
+      </div>
+      <div class="feature">
+        <div class="ic">🌍</div>
+        <h4>Doble uso</h4>
+        <p>App de escritorio en Python + demo web para GitHub Pages.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════ footer ══════════════════ -->
+  <footer>
+    <div>Hecho con ❤️ usando <strong>Python 3.14</strong> y <strong>HTML/CSS/JS</strong> puro.</div>
+    <div class="row">
+      <a href="#demo">Demo</a>
+      <span>·</span>
+      <a href="#instalar">Instalar</a>
+      <span>·</span>
+      <a href="#features">Características</a>
+      <span>·</span>
+      <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </footer>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════════
+   View URL — demo web (sin dependencias externas)
+   ═══════════════════════════════════════════════════════════════ */
+const $  = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+/* ── proxies CORS ── */
+const PROXIES = {
+  allorigins: u => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u),
+  codetabs:   u => 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(u),
+  corsproxy:  u => 'https://corsproxy.io/?' + encodeURIComponent(u),
+  none:       u => u
+};
+const MAX_ASSETS = 12;
+const TIMEOUT    = 20000;
+const MAX_HL     = 900000;
+
+/* ── estado ── */
+const state = {
+  url:'', html:'', proxyKey:'allorigins',
+  cssLinks:[], inlineStyles:[], jsLinks:[], inlineScripts:[],
+  images:[], links:[], metas:[], title:'',
+  assets:{}, tab:'html', wrap:false
+};
+
+/* ═══ pestañas de la página (demo / instalar / features) ═══ */
+$$('.tabs > button[data-pane]').forEach(b => {
+  b.addEventListener('click', () => {
+    $$('.tabs > button[data-pane]').forEach(x => x.classList.toggle('active', x === b));
+    $$('section.pane').forEach(p => p.classList.toggle('active', p.id === b.dataset.pane));
+  });
+});
+
+/* ═══ pestañas de la demo ═══ */
+$$('.demo-tabs button[data-tab]').forEach(b => {
+  b.addEventListener('click', () => { state.tab = b.dataset.tab; render(); });
+});
+
+/* ═══ botones copiar de la sección Instalar ═══ */
+$$('.copy-mini').forEach(btn => {
+  btn.addEventListener('click', async e => {
+    e.preventDefault();
+    const t = document.getElementById(btn.dataset.copy);
+    if(!t) return;
+    try {
+      await navigator.clipboard.writeText(t.textContent.trim());
+      const old = btn.textContent;
+      btn.textContent = '✓ copiado';
+      setTimeout(() => btn.textContent = old, 1400);
+    } catch(err) { /* silencioso */ }
+  });
+});
+
+/* ═══════════════════════════════════════════════════════════════
+   RESALTADO DE SINTAXIS
+   ═══════════════════════════════════════════════════════════════ */
+function paint(src, re, fn){
+  re.lastIndex = 0;
+  let out = '', last = 0, m;
+  while((m = re.exec(src)) !== null){
+    if(m.index > last) out += esc(src.slice(last, m.index));
+    out += fn(m);
+    last = m.index + m[0].length;
+    if(m[0].length === 0) re.lastIndex++;
+  }
+  out += esc(src.slice(last));
+  return out;
+}
+const RE_HTML = /(<!--[\s\S]*?-->)|(<!DOCTYPE[^>]*>)|(<\/?[a-zA-Z][^>]*>)/g;
+function hlTag(t){
+  const m = t.match(/^(<\/?)([a-zA-Z][\w:.-]*)([\s\S]*?)(\/?>)$/);
+  if(!m) return esc(t);
+  const attrs = esc(m[3]).replace(
+    /([a-zA-Z_:@][\w:.\-]*)(\s*=\s*)("[^"]*"|'[^']*'|[^\s"'>]+)/g,
+    (s,n,eq,v) => `<span class="c-attr">${n}</span>${eq}<span class="c-str">${v}</span>`
+  );
+  return `<span class="c-punc">${esc(m[1])}</span><span class="c-tag">${esc(m[2])}</span>`
+       + attrs + `<span class="c-punc">${esc(m[4])}</span>`;
+}
+const hlHTML = s => paint(s, RE_HTML, m =>
+  m[1] ? `<span class="c-com">${esc(m[1])}</span>` :
+  m[2] ? `<span class="c-doc">${esc(m[2])}</span>` :
+         hlTag(m[3]));
+
+const RE_CSS = /(\/\*[\s\S]*?\*\/)|("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')|(@[\w-]+)|(#[0-9a-fA-F]{3,8}\b)|([\w-]+(?=\s*:))|(\d*\.?\d+(?:px|em|rem|%|vh|vw|s|ms|deg|fr|pt)?)|([{}();:,>+~])/g;
+const hlCSS = s => paint(s, RE_CSS, m =>
+  m[1] ? `<span class="c-com">${esc(m[1])}</span>` :
+  m[2] ? `<span class="c-str">${esc(m[2])}</span>` :
+  m[3] ? `<span class="c-at">${esc(m[3])}</span>` :
+  m[4] ? `<span class="c-num">${esc(m[4])}</span>` :
+  m[5] ? `<span class="c-prop">${esc(m[5])}</span>` :
+  m[6] ? `<span class="c-num">${esc(m[6])}</span>` :
+         `<span class="c-punc">${esc(m[7])}</span>`);
+
+const RE_JS = /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|("(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*'|`(?:[^`\\]|\\.)*`)|(\b(?:const|let|var|function|return|if|else|for|while|do|switch|case|break|continue|new|class|extends|super|this|typeof|instanceof|delete|in|of|try|catch|finally|throw|async|await|yield|import|export|from|default|null|undefined|true|false|void|static)\b)|(\b\d+(?:\.\d+)?\b)/g;
+const hlJS = s => paint(s, RE_JS, m =>
+  m[1] ? `<span class="c-com">${esc(m[1])}</span>` :
+  m[2] ? `<span class="c-str">${esc(m[2])}</span>` :
+  m[3] ? `<span class="c-kw">${esc(m[3])}</span>` :
+         `<span class="c-num">${esc(m[4])}</span>`);
+
+function highlight(code, lang){
+  if(!code) return '<span class="c-com">(sin contenido)</span>';
+  if(code.length > MAX_HL) return esc(code);
+  try{
+    if(lang === 'html') return hlHTML(code);
+    if(lang === 'css')  return hlCSS(code);
+    if(lang === 'js')   return hlJS(code);
+  }catch(e){}
+  return esc(code);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PETICIONES
+   ═══════════════════════════════════════════════════════════════ */
+async function fetchThrough(url, key){
+  const build = PROXIES[key] || PROXIES.none;
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), TIMEOUT);
+  try{
+    const res = await fetch(build(url), { signal:ctrl.signal, redirect:'follow' });
+    if(!res.ok) throw new Error('HTTP ' + res.status);
+    const text = await res.text();
+    if(!text || !text.trim()) throw new Error('respuesta vacía');
+    return text;
+  } finally { clearTimeout(t); }
+}
+async function fetchWithFallback(url){
+  const selected = $('#proxy').value;
+  const order = selected === 'none'
+    ? ['none']
+    : [selected, ...Object.keys(PROXIES).filter(k => k !== 'none' && k !== selected)];
+  let lastErr = null;
+  for(const key of order){
+    try{
+      setStatus(`Descargando con ${key}…`, 'load');
+      return { text: await fetchThrough(url, key), proxyKey: key };
+    }catch(e){ lastErr = e; }
+  }
+  throw lastErr || new Error('No se pudo descargar');
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ANÁLISIS
+   ═══════════════════════════════════════════════════════════════ */
+function parseDoc(html, base){
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  const abs = h => { try { return new URL(h, base).href; } catch(e){ return h; } };
+
+  state.title = doc.title || '';
+  state.cssLinks = Array.from(doc.querySelectorAll('link[rel~="stylesheet" i][href]'))
+    .map(l => ({ href: abs(l.getAttribute('href')), media: l.getAttribute('media') || '' }));
+  state.inlineStyles = Array.from(doc.querySelectorAll('style'))
+    .map(s => s.textContent || '').filter(t => t.trim());
+  state.jsLinks = Array.from(doc.querySelectorAll('script[src]'))
+    .map(s => ({ href: abs(s.getAttribute('src')), type: s.getAttribute('type') || '' }));
+  state.inlineScripts = Array.from(doc.querySelectorAll('script:not([src])'))
+    .map(s => s.textContent || '').filter(t => t.trim());
+  state.images = Array.from(doc.querySelectorAll('img[src]'))
+    .map(i => ({ src: abs(i.getAttribute('src')), alt: i.getAttribute('alt') || '' }));
+
+  const seen = new Map();
+  Array.from(doc.querySelectorAll('a[href]')).forEach(a => {
+    const href = abs(a.getAttribute('href'));
+    if(!seen.has(href)) seen.set(href, { href, text:(a.textContent||'').trim().slice(0,70) });
+  });
+  state.links = Array.from(seen.values());
+
+  state.metas = Array.from(doc.querySelectorAll('meta[name], meta[property]'))
+    .map(m => ({ name:m.getAttribute('name')||m.getAttribute('property'),
+                 content:(m.getAttribute('content')||'').slice(0,400) }))
+    .filter(m => m.name && m.content);
+}
+
+async function loadAssets(proxyKey){
+  const urls = [...new Set([
+    ...state.cssLinks.map(l => l.href),
+    ...state.jsLinks.map(l => l.href)
+  ])].slice(0, MAX_ASSETS);
+  if(!urls.length) return;
+  let done = 0;
+  await Promise.all(urls.map(async u => {
+    try { state.assets[u] = { text: await fetchThrough(u, proxyKey) }; }
+    catch(e){ state.assets[u] = { error: e.message }; }
+    done++;
+    setStatus(`Cargando recursos… ${done}/${urls.length}`, 'load');
+  }));
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CONSTRUCCIÓN DE PESTAÑAS
+   ═══════════════════════════════════════════════════════════════ */
+function buildCSS(){
+  const parts = [];
+  state.inlineStyles.forEach((css,i) => parts.push(
+    `/* ═════════ <style> en línea #${i+1} ═════════ */\n${css.trim()}`));
+  state.cssLinks.forEach(l => {
+    const a = state.assets[l.href];
+    const head = `/* ═════════ ${l.href} ═════════ */`;
+    if(!a)           parts.push(`${head}\n   (no descargado)`);
+    else if(a.error) parts.push(`${head}\n   ERROR: ${a.error}`);
+    else             parts.push(`${head}\n${a.text.trim()}`);
+  });
+  return parts.join('\n\n\n') || '/* No se encontró CSS en esta página. */';
+}
+function buildJS(){
+  const parts = [];
+  state.inlineScripts.forEach((js,i) => parts.push(
+    `/* ═════════ <script> en línea #${i+1} ═════════ */\n${js.trim()}`));
+  state.jsLinks.forEach(l => {
+    const a = state.assets[l.href];
+    const head = `/* ═════════ ${l.href} ═════════ */`;
+    if(!a)           parts.push(`${head}\n   (no descargado)`);
+    else if(a.error) parts.push(`${head}\n   ERROR: ${a.error}`);
+    else             parts.push(`${head}\n${a.text.trim()}`);
+  });
+  return parts.join('\n\n\n') || '/* No se encontró JavaScript en esta página. */';
+}
+function section(t, items, render){
+  if(!items.length) return '';
+  return `<h3>${esc(t)} <em>${items.length}</em></h3><ul>${items.map(render).join('')}</ul>`;
+}
+function buildResourcesHTML(){
+  if(!state.html) return '<p class="empty">Todavía no se ha cargado ninguna página.</p>';
+  const link = (h,x) => `<li><a href="${esc(h)}" target="_blank" rel="noopener">${esc(h)}</a>${x||''}</li>`;
+  return [
+    section('Hojas de estilo externas', state.cssLinks, l =>
+      link(l.href, l.media ? `<span class="tag">media: ${esc(l.media)}</span>` : '')),
+    section('Estilos en línea', state.inlineStyles, (c,i) =>
+      `<li><span class="tag">&lt;style&gt; #${i+1}</span> ${esc(c.trim().slice(0,140))}…</li>`),
+    section('Scripts externos', state.jsLinks, l =>
+      link(l.href, l.type ? `<span class="tag">${esc(l.type)}</span>` : '')),
+    section('Scripts en línea', state.inlineScripts, (j,i) =>
+      `<li><span class="tag">inline #${i+1}</span> ${esc(j.trim().slice(0,140))}…</li>`),
+    section('Imágenes', state.images, im =>
+      link(im.src, im.alt ? `<span class="tag">alt: ${esc(im.alt)}</span>` : '')),
+    section('Enlaces', state.links.slice(0,150), l =>
+      link(l.href, l.text ? `<span class="tag">${esc(l.text)}</span>` : ''))
+  ].join('') || '<p class="empty">No se encontraron recursos.</p>';
+}
+function buildInfoHTML(){
+  if(!state.html) return '<p class="empty">Todavía no se ha cargado ninguna página.</p>';
+  let host = '';
+  try { host = new URL(state.url).hostname; } catch(e){ host = state.url; }
+  const rows = [
+    ['URL', state.url],
+    ['Título', state.title || '(sin título)'],
+    ['Tamaño del HTML', state.html.length.toLocaleString('es-ES') + ' caracteres'],
+    ['Líneas de HTML', state.html.split('\n').length.toLocaleString('es-ES')],
+    ['Proxy usado', state.proxyKey],
+    ['CSS externo', state.cssLinks.length],
+    ['CSS en línea', state.inlineStyles.length],
+    ['JS externo', state.jsLinks.length],
+    ['JS en línea', state.inlineScripts.length],
+    ['Imágenes', state.images.length],
+    ['Enlaces únicos', state.links.length],
+    ['Etiquetas meta', state.metas.length]
+  ];
+  const meta = state.metas.length
+    ? `<h3>Metadatos <em>${state.metas.length}</em></h3><dl class="kv">` +
+      state.metas.map(m => `<dt>${esc(m.name)}</dt><dd>${esc(m.content)}</dd>`).join('') + '</dl>'
+    : '';
+  return `<h3>Resumen de ${esc(host)}</h3><dl class="kv">` +
+    rows.map(([k,v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('') +
+    '</dl>' + meta;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDER
+   ═══════════════════════════════════════════════════════════════ */
+const gutter = $('#gutter'), codeEl = $('#code'), panelEl = $('#panel');
+
+function showCode(code, lang){
+  panelEl.hidden = true; codeEl.hidden = false;
+  codeEl.classList.toggle('wrap', state.wrap);
+  codeEl.innerHTML = highlight(code || '', lang);
+  const lines = (code || '').split('\n').length;
+  if(state.wrap || lines > 20000){ gutter.hidden = true; }
+  else {
+    gutter.hidden = false;
+    const arr = new Array(lines);
+    for(let i=0;i<lines;i++) arr[i] = i+1;
+    gutter.textContent = arr.join('\n');
+  }
+  codeEl.scrollTop = gutter.scrollTop = 0;
+}
+function showPanel(html){
+  codeEl.hidden = true; gutter.hidden = true;
+  panelEl.hidden = false; panelEl.innerHTML = html;
+}
+function updateCounts(){
+  $('#cHtml').textContent = state.html ? state.html.split('\n').length : 0;
+  $('#cCss').textContent  = state.inlineStyles.length + state.cssLinks.length;
+  $('#cJs').textContent   = state.inlineScripts.length + state.jsLinks.length;
+  $('#cRes').textContent  = state.images.length + state.links.length;
+}
+function render(){
+  $$('.demo-tabs button[data-tab]').forEach(b =>
+    b.classList.toggle('active', b.dataset.tab === state.tab));
+  if(state.tab === 'html')          showCode(state.html, 'html');
+  else if(state.tab === 'css')      showCode(buildCSS(), 'css');
+  else if(state.tab === 'js')       showCode(buildJS(), 'js');
+  else if(state.tab === 'recursos') showPanel(buildResourcesHTML());
+  else if(state.tab === 'info')     showPanel(buildInfoHTML());
+  updateCounts();
+}
+function currentCode(){
+  if(state.tab === 'html') return { code:state.html, ext:'html' };
+  if(state.tab === 'css')  return { code:buildCSS(), ext:'css' };
+  if(state.tab === 'js')   return { code:buildJS(), ext:'js' };
+  return null;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FLUJO
+   ═══════════════════════════════════════════════════════════════ */
+function setStatus(text, type){
+  const el = $('#status');
+  el.className = 'status' + (type ? ' ' + type : '');
+  $('#statusText').textContent = text;
+}
+function normalize(raw){
+  let u = raw.trim();
+  if(!u) return '';
+  if(!/^https?:\/\//i.test(u)) u = 'https://' + u;
+  return u;
+}
+async function load(url){
+  const btn = $('#go');
+  btn.disabled = true; btn.textContent = 'Cargando…';
+  setStatus('Conectando con ' + url + ' …', 'load');
+
+  state.assets = {}; state.html = '';
+  state.cssLinks = []; state.inlineStyles = [];
+  state.jsLinks = []; state.inlineScripts = [];
+  state.images = []; state.links = []; state.metas = []; state.title = '';
+
+  try{
+    const { text, proxyKey } = await fetchWithFallback(url);
+    state.url = url; state.html = text; state.proxyKey = proxyKey;
+    $('#openBtn').href = url; $('#openBtn').hidden = false;
+    try{ parseDoc(text, url); }catch(e){}
+    state.tab = 'html'; render();
+    setStatus(`✔ ${text.length.toLocaleString('es-ES')} caracteres. Cargando recursos…`, 'ok');
+    await loadAssets(proxyKey); render();
+    setStatus(`✔ Listo · ${text.length.toLocaleString('es-ES')} caracteres · ` +
+      `${state.cssLinks.length + state.inlineStyles.length} CSS · ` +
+      `${state.jsLinks.length + state.inlineScripts.length} JS · ` +
+      `${state.images.length} imágenes`, 'ok');
+  }catch(err){
+    setStatus('✖ Error: ' + err.message + ' — prueba con otro proxy.', 'err');
+  }finally{
+    btn.disabled = false; btn.textContent = 'Ver código';
+  }
+}
+
+/* ═══ eventos ═══ */
+$('#go').addEventListener('click', () => {
+  const u = normalize($('#url').value);
+  if(u) load(u);
+});
+$('#url').addEventListener('keydown', e => { if(e.key === 'Enter') $('#go').click(); });
+
+codeEl.addEventListener('scroll', () => {
+  if(!gutter.hidden) gutter.scrollTop = codeEl.scrollTop;
+});
+
+$('#wrapBtn').addEventListener('click', () => {
+  state.wrap = !state.wrap;
+  $('#wrapBtn').textContent = state.wrap ? '↵ Sin ajuste' : '↵ Ajustar';
+  render();
+});
+$('#copyBtn').addEventListener('click', async () => {
+  const c = currentCode();
+  if(!c) return setStatus('La pestaña actual no contiene código.', 'err');
+  try{
+    await navigator.clipboard.writeText(c.code || '');
+    setStatus('✔ Código copiado al portapapeles.', 'ok');
+  }catch(e){ setStatus('No se pudo copiar.', 'err'); }
+});
+$('#dlBtn').addEventListener('click', () => {
+  const c = currentCode();
+  if(!c || !c.code) return setStatus('No hay nada que descargar.', 'err');
+  let name = 'viewurl';
+  try{ name = new URL(state.url).hostname.replace(/[^\w.-]/g,'_'); }catch(e){}
+  const blob = new Blob([c.code], { type:'text/plain;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `${name}.${c.ext}`;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  setStatus('✔ Descargado: ' + a.download, 'ok');
+});
+
+/* render inicial */
+render();
+</script>
+</body>
+</html>
