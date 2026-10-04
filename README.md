@@ -18,6 +18,8 @@ Esta version que es la original puede mostrar el codigo de cualquier pagina web 
 
 - Sin `pip install`
 
+- Idiomas español, ingles y portugues
+
 ---
 
 ## View URL DEMO (HTML)
@@ -31,6 +33,8 @@ Esta versión es una DEMO de View URL, ósea si muestra código de paginas web p
 - Ajustar, copiar y descargar
 
 - URL de GitHub Pages
+
+- Idiomas español, ingles y portugues
 
 ---
 
