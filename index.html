@@ -12,10 +12,8 @@
     --bg:#0b0f14; --panel:#0d1117; --panel-2:#0f1520; --border:#1e2937;
     --text:#c9d1d9; --muted:#8b949e; --accent:#58a6ff; --accent-2:#7c3aed;
     --ok:#3fb950; --err:#f85149; --warn:#d29922;
-    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
-            "Liberation Mono", monospace;
-    --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
-            Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+    --sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
@@ -25,269 +23,178 @@
       radial-gradient(1200px 560px at 12% -10%, #12203a 0%, transparent 60%),
       radial-gradient(900px 420px at 100% 0%, #1c1235 0%, transparent 55%),
       var(--bg);
-    color:var(--text);
-    font-family:var(--sans);
-    line-height:1.6;
-    min-height:100vh;
+    color:var(--text); font-family:var(--sans); line-height:1.6; min-height:100vh;
   }
   a{color:var(--accent);text-decoration:none}
   a:hover{text-decoration:underline}
   code,kbd,pre{font-family:var(--mono)}
-
-  /* ─── layout ─── */
   .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
-  header.nav{
-    display:flex;align-items:center;justify-content:space-between;
-    padding:18px 0;gap:16px;flex-wrap:wrap;
-  }
+
+  header.nav{display:flex;align-items:center;justify-content:space-between;
+    padding:18px 0;gap:16px;flex-wrap:wrap}
   .brand{display:flex;align-items:center;gap:12px}
-  .logo{
-    width:42px;height:42px;border-radius:12px;display:grid;place-items:center;
+  .logo{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;
     background:linear-gradient(135deg,#1f6feb,#7c3aed);color:#fff;
     font-family:var(--mono);font-weight:700;font-size:15px;
-    box-shadow:0 8px 24px rgba(31,111,235,.35);
-  }
+    box-shadow:0 8px 24px rgba(31,111,235,.35)}
   .brand h1{font-size:18px;margin:0;letter-spacing:.2px}
   .brand p{margin:0;font-size:12px;color:var(--muted)}
-  nav.links{display:flex;gap:6px;flex-wrap:wrap}
-  nav.links a{
-    color:var(--muted);font-size:13px;padding:7px 12px;border-radius:8px;
-    border:1px solid transparent;transition:.15s;
-  }
+  nav.links{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  nav.links a{color:var(--muted);font-size:13px;padding:7px 12px;border-radius:8px;
+    border:1px solid transparent;transition:.15s}
   nav.links a:hover{color:var(--text);border-color:var(--border);
     background:#111823;text-decoration:none}
-
-  /* ─── hero ─── */
-  .hero{padding:38px 0 12px;text-align:center}
-  .badge{
-    display:inline-flex;align-items:center;gap:8px;
-    border:1px solid var(--border);background:#0d1117;
-    color:var(--muted);font-size:12px;padding:6px 14px;
-    border-radius:99px;font-family:var(--mono);
+  #langSel{
+    background:#161b22;border:1px solid var(--border);color:var(--text);
+    padding:7px 10px;border-radius:8px;font-size:13px;font-family:inherit;
+    cursor:pointer;outline:none;
   }
+  #langSel:focus{border-color:var(--accent);
+    box-shadow:0 0 0 3px rgba(88,166,255,.15)}
+
+  .hero{padding:38px 0 12px;text-align:center}
+  .badge{display:inline-flex;align-items:center;gap:8px;
+    border:1px solid var(--border);background:#0d1117;color:var(--muted);
+    font-size:12px;padding:6px 14px;border-radius:99px;font-family:var(--mono)}
   .badge .dot{width:8px;height:8px;border-radius:50%;
     background:var(--ok);box-shadow:0 0 10px var(--ok)}
-  .hero h2{
-    font-size:clamp(28px,5vw,44px);line-height:1.15;margin:18px 0 12px;
-    letter-spacing:-.5px;
-  }
-  .hero h2 span{
-    background:linear-gradient(135deg,#58a6ff,#a78bfa);
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-  }
-  .hero p.lead{
-    max-width:640px;margin:0 auto;color:var(--muted);font-size:16px;
-  }
+  .hero h2{font-size:clamp(28px,5vw,44px);line-height:1.15;
+    margin:18px 0 12px;letter-spacing:-.5px}
+  .hero h2 span{background:linear-gradient(135deg,#58a6ff,#a78bfa);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p.lead{max-width:640px;margin:0 auto;color:var(--muted);font-size:16px}
   .cta{display:flex;gap:10px;justify-content:center;margin-top:24px;flex-wrap:wrap}
-  .btn{
-    display:inline-flex;align-items:center;gap:8px;
-    padding:11px 20px;border-radius:10px;font-size:14px;font-weight:600;
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;
+    border-radius:10px;font-size:14px;font-weight:600;
     border:1px solid var(--border);background:#161b22;color:var(--text);
-    cursor:pointer;transition:.15s;font-family:inherit;
-  }
+    cursor:pointer;transition:.15s;font-family:inherit}
   .btn:hover{background:#1b2230;border-color:#30475f;text-decoration:none}
-  .btn.primary{
-    background:linear-gradient(135deg,#1f6feb,#3b82f6);
-    border-color:#1f6feb;color:#fff;
-  }
+  .btn.primary{background:linear-gradient(135deg,#1f6feb,#3b82f6);
+    border-color:#1f6feb;color:#fff}
   .btn.primary:hover{filter:brightness(1.12)}
 
-  /* ─── tarjetas de pestaña ─── */
-  .tabs{
-    display:flex;gap:6px;margin:44px 0 0;flex-wrap:wrap;
-    border-bottom:1px solid var(--border);padding-bottom:2px;
-  }
-  .tabs button{
-    background:transparent;border:none;color:var(--muted);
+  .tabs{display:flex;gap:6px;margin:44px 0 0;flex-wrap:wrap;
+    border-bottom:1px solid var(--border);padding-bottom:2px}
+  .tabs button{background:transparent;border:none;color:var(--muted);
     padding:11px 16px;font-size:14px;font-family:inherit;cursor:pointer;
-    border-bottom:2px solid transparent;transition:.15s;border-radius:8px 8px 0 0;
-  }
+    border-bottom:2px solid transparent;transition:.15s;border-radius:8px 8px 0 0}
   .tabs button:hover{color:var(--text);background:#111823}
-  .tabs button.active{
-    color:var(--text);border-bottom-color:var(--accent);background:#0f1520;
-  }
+  .tabs button.active{color:var(--text);border-bottom-color:var(--accent);
+    background:#0f1520}
 
   section.pane{display:none;padding:26px 0 60px}
   section.pane.active{display:block;animation:fade .25s ease}
   @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 
-  /* ─── demo ─── */
   .demo-bar{display:flex;gap:8px;flex-wrap:wrap}
-  .demo-bar input{
-    flex:1;min-width:220px;padding:12px 14px;border-radius:10px;
+  .demo-bar input{flex:1;min-width:220px;padding:12px 14px;border-radius:10px;
     border:1px solid var(--border);background:#0a0e13;color:var(--text);
-    font-family:var(--mono);font-size:13px;outline:none;transition:.15s;
-  }
+    font-family:var(--mono);font-size:13px;outline:none;transition:.15s}
   .demo-bar input:focus{border-color:var(--accent);
     box-shadow:0 0 0 3px rgba(88,166,255,.15)}
-  .demo-bar select{
-    padding:11px 12px;border-radius:10px;border:1px solid var(--border);
-    background:#161b22;color:var(--text);font-size:13px;font-family:inherit;
-    cursor:pointer;
-  }
-  .status{
-    display:flex;align-items:center;gap:8px;margin:14px 0 8px;
-    font-size:12.5px;color:var(--muted);min-height:20px;
-  }
-  .status .sdot{width:8px;height:8px;border-radius:50%;
-    background:#374151;flex:0 0 auto}
+  .demo-bar select{padding:11px 12px;border-radius:10px;border:1px solid var(--border);
+    background:#161b22;color:var(--text);font-size:13px;font-family:inherit;cursor:pointer}
+  .status{display:flex;align-items:center;gap:8px;margin:14px 0 8px;
+    font-size:12.5px;color:var(--muted);min-height:20px}
+  .status .sdot{width:8px;height:8px;border-radius:50%;background:#374151;flex:0 0 auto}
   .status.ok .sdot{background:var(--ok);box-shadow:0 0 10px var(--ok)}
   .status.err .sdot{background:var(--err);box-shadow:0 0 10px var(--err)}
   .status.load .sdot{background:var(--warn);animation:pulse 1s infinite}
   @keyframes pulse{50%{opacity:.25}}
 
-  .demo-tabs{
-    display:flex;gap:4px;border-bottom:1px solid var(--border);
-    padding:0 4px;margin-top:14px;flex-wrap:wrap;
-  }
-  .demo-tabs button{
-    background:transparent;border:none;color:var(--muted);
+  .demo-tabs{display:flex;gap:4px;border-bottom:1px solid var(--border);
+    padding:0 4px;margin-top:14px;flex-wrap:wrap}
+  .demo-tabs button{background:transparent;border:none;color:var(--muted);
     padding:9px 12px;font-size:12.5px;font-family:inherit;cursor:pointer;
-    border-bottom:2px solid transparent;transition:.15s;
-  }
+    border-bottom:2px solid transparent;transition:.15s}
   .demo-tabs button:hover{color:var(--text);background:#111823}
-  .demo-tabs button.active{
-    color:var(--text);border-bottom-color:var(--accent);background:#0f1520;
-  }
-  .demo-tabs button em{
-    font-style:normal;font-size:10px;background:#1f2937;color:var(--muted);
-    padding:1px 6px;border-radius:99px;margin-left:5px;
-  }
+  .demo-tabs button.active{color:var(--text);border-bottom-color:var(--accent);
+    background:#0f1520}
+  .demo-tabs button em{font-style:normal;font-size:10px;background:#1f2937;
+    color:var(--muted);padding:1px 6px;border-radius:99px;margin-left:5px}
   .demo-tabs .spacer{flex:1}
-  .demo-tabs .ghost{
-    font-size:12px;padding:7px 11px;border-radius:8px;
+  .demo-tabs .ghost{font-size:12px;padding:7px 11px;border-radius:8px;
     border:1px solid var(--border);color:var(--muted);background:#111823;
-    cursor:pointer;font-family:inherit;transition:.15s;
-  }
+    cursor:pointer;font-family:inherit;transition:.15s}
   .demo-tabs .ghost:hover{color:var(--text);border-color:#30475f}
 
-  .viewer{
-    background:var(--panel);border:1px solid var(--border);
+  .viewer{background:var(--panel);border:1px solid var(--border);
     border-top:none;border-radius:0 0 12px 12px;
-    display:flex;min-height:380px;max-height:520px;overflow:hidden;
-  }
-  .gutter{
-    flex:0 0 auto;padding:14px 10px 14px 14px;text-align:right;
+    display:flex;min-height:380px;max-height:520px;overflow:hidden}
+  .gutter{flex:0 0 auto;padding:14px 10px 14px 14px;text-align:right;
     color:#39465a;background:#0a0e13;border-right:1px solid var(--border);
-    white-space:pre;overflow:hidden;font:12.5px/1.65 var(--mono);
-    user-select:none;
-  }
+    white-space:pre;overflow:hidden;font:12.5px/1.65 var(--mono);user-select:none}
   .gutter[hidden]{display:none}
-  pre.code{
-    flex:1;margin:0;padding:14px;overflow:auto;white-space:pre;tab-size:2;
-    font:12.5px/1.65 var(--mono);color:var(--text);
-  }
+  pre.code{flex:1;margin:0;padding:14px;overflow:auto;white-space:pre;tab-size:2;
+    font:12.5px/1.65 var(--mono);color:var(--text)}
   pre.code[hidden]{display:none}
   pre.code.wrap{white-space:pre-wrap;word-break:break-word}
-  .panel-body{
-    flex:1;overflow:auto;padding:18px 22px;font-size:13px;
-  }
+  .panel-body{flex:1;overflow:auto;padding:18px 22px;font-size:13px}
   .panel-body[hidden]{display:none}
-  .panel-body h3{
-    font-size:12px;text-transform:uppercase;letter-spacing:1.2px;
-    color:var(--muted);margin:20px 0 10px;font-weight:600;
-  }
+  .panel-body h3{font-size:12px;text-transform:uppercase;letter-spacing:1.2px;
+    color:var(--muted);margin:20px 0 10px;font-weight:600}
   .panel-body h3:first-child{margin-top:0}
-  .panel-body h3 em{
-    font-style:normal;background:#1f2937;color:#9aa7b6;padding:1px 7px;
-    border-radius:99px;font-size:11px;margin-left:6px;
-  }
+  .panel-body h3 em{font-style:normal;background:#1f2937;color:#9aa7b6;
+    padding:1px 7px;border-radius:99px;font-size:11px;margin-left:6px}
   .panel-body ul{list-style:none;margin:0;padding:0;
     display:flex;flex-direction:column;gap:6px}
-  .panel-body li{
-    background:var(--panel-2);border:1px solid var(--border);
-    border-radius:8px;padding:8px 12px;font-family:var(--mono);
-    font-size:12px;word-break:break-all;display:flex;gap:10px;
-    align-items:baseline;
-  }
-  .panel-body li .tag{
-    color:var(--muted);font-size:10.5px;border:1px solid var(--border);
-    padding:1px 6px;border-radius:99px;flex:0 0 auto;
-  }
+  .panel-body li{background:var(--panel-2);border:1px solid var(--border);
+    border-radius:8px;padding:8px 12px;font-family:var(--mono);font-size:12px;
+    word-break:break-all;display:flex;gap:10px;align-items:baseline}
+  .panel-body li .tag{color:var(--muted);font-size:10.5px;
+    border:1px solid var(--border);padding:1px 6px;border-radius:99px;flex:0 0 auto}
   .kv{display:grid;grid-template-columns:170px 1fr;gap:8px 14px;font-size:12.5px}
   .kv dt{color:var(--muted)}
   .kv dd{margin:0;font-family:var(--mono);word-break:break-all}
   .empty{color:var(--muted);font-size:13px;padding:8px 0}
 
-  /* colores de sintaxis */
   .c-com{color:#6b7a8d;font-style:italic}
-  .c-tag{color:#7ee787}
-  .c-attr{color:#79c0ff}
-  .c-str{color:#a5d6ff}
-  .c-punc{color:#7d8590}
-  .c-doc{color:#8b949e}
-  .c-prop{color:#79c0ff}
-  .c-at{color:#ff7b72}
-  .c-num{color:#f0883e}
-  .c-kw{color:#ff7b72}
+  .c-tag{color:#7ee787} .c-attr{color:#79c0ff} .c-str{color:#a5d6ff}
+  .c-punc{color:#7d8590} .c-doc{color:#8b949e} .c-prop{color:#79c0ff}
+  .c-at{color:#ff7b72} .c-num{color:#f0883e} .c-kw{color:#ff7b72}
 
-  /* ─── instalación / código ─── */
   .grid-2{display:grid;grid-template-columns:1fr;gap:18px}
   @media (min-width:820px){.grid-2{grid-template-columns:1fr 1fr}}
-  .card{
-    background:var(--panel);border:1px solid var(--border);
-    border-radius:12px;padding:20px 22px;
-  }
+  .card{background:var(--panel);border:1px solid var(--border);
+    border-radius:12px;padding:20px 22px}
   .card h3{margin:0 0 8px;font-size:15px}
   .card p{color:var(--muted);font-size:13.5px;margin:0 0 12px}
   .card ol,.card ul{margin:0;padding-left:20px;color:var(--text);font-size:13.5px}
   .card li{margin:6px 0}
-  .step{
-    display:inline-flex;align-items:center;justify-content:center;
+  .step{display:inline-flex;align-items:center;justify-content:center;
     width:22px;height:22px;border-radius:50%;font-size:12px;
     background:#1f2937;color:var(--accent);font-family:var(--mono);
-    margin-right:6px;font-weight:700;
-  }
-  pre.snippet{
-    background:#0a0e13;border:1px solid var(--border);border-radius:10px;
+    margin-right:6px;font-weight:700}
+  pre.snippet{background:#0a0e13;border:1px solid var(--border);border-radius:10px;
     padding:14px 16px;overflow:auto;font-size:12.5px;color:var(--text);
-    margin:12px 0 0;line-height:1.5;
-  }
-  .copy-mini{
-    float:right;background:#161b22;border:1px solid var(--border);
+    margin:12px 0 0;line-height:1.5;white-space:pre-wrap}
+  .copy-mini{float:right;background:#161b22;border:1px solid var(--border);
     color:var(--muted);font-size:11px;padding:3px 9px;border-radius:6px;
-    cursor:pointer;font-family:inherit;
-  }
+    cursor:pointer;font-family:inherit}
   .copy-mini:hover{color:var(--text);border-color:#30475f}
-  kbd{
-    background:#161b22;border:1px solid var(--border);border-bottom-width:2px;
-    border-radius:6px;padding:1px 6px;font-size:12px;color:var(--text);
-  }
+  kbd{background:#161b22;border:1px solid var(--border);border-bottom-width:2px;
+    border-radius:6px;padding:1px 6px;font-size:12px;color:var(--text)}
 
-  /* ─── features ─── */
-  .features{
-    display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:14px;margin-top:20px;
-  }
-  .feature{
-    background:var(--panel);border:1px solid var(--border);
-    border-radius:12px;padding:16px 18px;transition:.15s;
-  }
+  .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:14px;margin-top:20px}
+  .feature{background:var(--panel);border:1px solid var(--border);
+    border-radius:12px;padding:16px 18px;transition:.15s}
   .feature:hover{border-color:#30475f;transform:translateY(-2px)}
   .feature h4{margin:0 0 4px;font-size:14px}
   .feature p{margin:0;color:var(--muted);font-size:12.5px}
-  .feature .ic{
-    width:32px;height:32px;border-radius:9px;display:grid;place-items:center;
+  .feature .ic{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;
     background:#111c2c;border:1px solid #1e3a5f;color:var(--accent);
-    font-family:var(--mono);font-size:14px;margin-bottom:10px;
-  }
+    font-family:var(--mono);font-size:14px;margin-bottom:10px}
 
-  /* ─── footer ─── */
-  footer{
-    border-top:1px solid var(--border);margin-top:40px;
-    padding:24px 0 40px;text-align:center;color:var(--muted);font-size:13px;
-  }
-  footer .row{
-    display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:8px;
-  }
+  footer{border-top:1px solid var(--border);margin-top:40px;
+    padding:24px 0 40px;text-align:center;color:var(--muted);font-size:13px}
+  footer .row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:8px}
   footer a{color:var(--muted)}
   footer a:hover{color:var(--accent)}
 
-  /* scrollbars */
   ::-webkit-scrollbar{width:11px;height:11px}
   ::-webkit-scrollbar-track{background:#0a0e13}
-  ::-webkit-scrollbar-thumb{background:#243043;border-radius:8px;
-    border:2px solid #0a0e13}
+  ::-webkit-scrollbar-thumb{background:#243043;border-radius:8px;border:2px solid #0a0e13}
   ::-webkit-scrollbar-thumb:hover{background:#31465f}
 </style>
 </head>
@@ -295,180 +202,175 @@
 
 <div class="wrap">
 
-  <!-- ══════════════════ nav ══════════════════ -->
+  <!-- ═══ nav ═══ -->
   <header class="nav">
     <div class="brand">
       <span class="logo">&lt;/&gt;</span>
       <div>
         <h1>View URL</h1>
-        <p>Mira el código de cualquier web</p>
+        <p data-i18n="brand.tagline">Mira el código de cualquier web</p>
       </div>
     </div>
     <nav class="links">
-      <a href="#demo">Demo en vivo</a>
-      <a href="#instalar">Instalar</a>
-      <a href="#features">Características</a>
-      <a href="https://github.com/" target="_blank" rel="noopener">GitHub ↗</a>
+      <a href="#demo" data-i18n="nav.demo">Demo en vivo</a>
+      <a href="#instalar" data-i18n="nav.install">Instalar</a>
+      <a href="#features" data-i18n="nav.features">Características</a>
+      <a href="https://github.com/" target="_blank" rel="noopener" data-i18n="nav.github">GitHub ↗</a>
+      <select id="langSel" aria-label="Language">
+        <option value="es">🇪🇸 Español</option>
+        <option value="en">🇬🇧 English</option>
+        <option value="pt">🇧🇷 Português</option>
+      </select>
     </nav>
   </header>
 
-  <!-- ══════════════════ hero ══════════════════ -->
+  <!-- ═══ hero ═══ -->
   <section class="hero">
-    <span class="badge"><span class="dot"></span> Python 3.14 · Solo biblioteca estándar</span>
-    <h2>El código de <span>cualquier web</span><br>en una sola ventana</h2>
-    <p class="lead">
-      <strong>View URL</strong> es un visor de código fuente HTML, CSS y JavaScript
-      con resaltado de sintaxis. Pruébalo aquí mismo o descarga la app de escritorio
-      escrita en Python puro.
-    </p>
+    <span class="badge"><span class="dot"></span> <span data-i18n="hero.badge">Python 3.14 · Solo biblioteca estándar</span></span>
+    <h2>
+      <span data-i18n="hero.t1">El código de</span>
+      <span data-i18n="hero.t2">cualquier web</span><br>
+      <span data-i18n="hero.t3">en una sola ventana</span>
+    </h2>
+    <p class="lead" data-i18n-html="hero.lead"></p>
     <div class="cta">
-      <a class="btn primary" href="#demo">Probar demo web</a>
-      <a class="btn" href="#instalar">Instalar la app</a>
+      <a class="btn primary" href="#demo" data-i18n="hero.cta_demo">Probar demo web</a>
+      <a class="btn" href="#instalar" data-i18n="hero.cta_install">Instalar la app</a>
     </div>
   </section>
 
-  <!-- ══════════════════ pestañas ══════════════════ -->
+  <!-- ═══ pestañas ═══ -->
   <div class="tabs" role="tablist">
-    <button data-pane="demo" class="active" role="tab">🌐 Demo en vivo</button>
-    <button data-pane="instalar" role="tab">🐍 Instalar (Python)</button>
-    <button data-pane="features" role="tab">✨ Características</button>
+    <button data-pane="demo" class="active" role="tab" data-i18n="tabs.demo">🌐 Demo en vivo</button>
+    <button data-pane="instalar" role="tab" data-i18n="tabs.install">🐍 Instalar (Python)</button>
+    <button data-pane="features" role="tab" data-i18n="tabs.features">✨ Características</button>
   </div>
 
-  <!-- ══════════════════ DEMO ══════════════════ -->
+  <!-- ═══ DEMO ═══ -->
   <section id="demo" class="pane active" role="tabpanel">
     <div class="demo-bar">
-      <input id="url" type="text" placeholder="https://example.com" spellcheck="false" />
-      <button class="btn primary" id="go">Ver código</button>
-      <select id="proxy" title="Servidor intermedio para saltar el CORS">
-        <option value="allorigins">Proxy: AllOrigins</option>
-        <option value="codetabs">Proxy: CodeTabs</option>
-        <option value="corsproxy">Proxy: corsproxy.io</option>
-        <option value="none">Sin proxy (directo)</option>
+      <input id="url" type="text" placeholder="https://example.com" spellcheck="false"
+             data-i18n-attr="placeholder:url.placeholder" />
+      <button class="btn primary" id="go" data-i18n="btn.view">Ver código</button>
+      <select id="proxy" title="Proxy">
+        <option value="allorigins">AllOrigins</option>
+        <option value="codetabs">CodeTabs</option>
+        <option value="corsproxy">corsproxy.io</option>
+        <option value="none" data-i18n="proxy.none">Sin proxy (directo)</option>
       </select>
     </div>
 
     <div class="status" id="status">
       <span class="sdot"></span>
-      <span id="statusText">Escribe una URL y pulsa «Ver código».</span>
+      <span id="statusText" data-i18n="status.ready">Escribe una URL y pulsa «Ver código».</span>
     </div>
 
     <div class="demo-tabs">
       <button data-tab="html" class="active">HTML <em id="cHtml">0</em></button>
       <button data-tab="css">CSS <em id="cCss">0</em></button>
       <button data-tab="js">JS <em id="cJs">0</em></button>
-      <button data-tab="recursos">Recursos <em id="cRes">0</em></button>
+      <button data-tab="recursos"><span data-i18n="tab.resources">Recursos</span> <em id="cRes">0</em></button>
       <button data-tab="info">Info</button>
       <span class="spacer"></span>
-      <button type="button" class="ghost" id="wrapBtn">↵ Ajustar</button>
-      <button type="button" class="ghost" id="copyBtn">Copiar</button>
-      <button type="button" class="ghost" id="dlBtn">Descargar</button>
-      <a class="ghost" id="openBtn" href="#" target="_blank" rel="noopener" hidden
-         style="text-decoration:none">Abrir web ↗</a>
+      <button type="button" class="ghost" id="wrapBtn" data-i18n="btn.wrap">↵ Ajustar</button>
+      <button type="button" class="ghost" id="copyBtn" data-i18n="btn.copy">Copiar</button>
+      <button type="button" class="ghost" id="dlBtn" data-i18n="btn.download">Descargar</button>
+      <a class="ghost" id="openBtn" href="#" target="_blank" rel="noopener"
+         style="text-decoration:none" hidden data-i18n="btn.open">Abrir web ↗</a>
     </div>
 
     <div class="viewer">
       <div class="gutter" id="gutter"></div>
-      <pre class="code" id="code"><span class="c-com">// View URL — introduce una dirección arriba y pulsa «Ver código».</span></pre>
+      <pre class="code" id="code"><span class="c-com" data-i18n="code.placeholder">// View URL — introduce una dirección arriba y pulsa «Ver código».</span></pre>
       <div class="panel-body" id="panel" hidden></div>
     </div>
   </section>
 
-  <!-- ══════════════════ INSTALAR ══════════════════ -->
+  <!-- ═══ INSTALAR ═══ -->
   <section id="instalar" class="pane" role="tabpanel">
     <div class="grid-2">
       <div class="card">
-        <h3>🐍 App de escritorio (Python 3.14)</h3>
-        <p>Visor nativo con Tkinter. Sin dependencias externas, sin <code>pip install</code>.</p>
+        <h3 data-i18n="install.py_title">🐍 App de escritorio (Python 3.14)</h3>
+        <p data-i18n="install.py_desc">Visor nativo con Tkinter. Sin dependencias externas, sin pip install.</p>
         <ol>
-          <li><span class="step">1</span>Instala <strong>Python 3.14</strong> desde
-            <a href="https://www.python.org/downloads/" target="_blank" rel="noopener">python.org</a>.
-          </li>
-          <li><span class="step">2</span>Guarda el archivo <code>view_url.py</code> (ver abajo).</li>
-          <li><span class="step">3</span>Abre <strong>IDLE</strong> → <kbd>File</kbd> → <kbd>Open…</kbd>.</li>
-          <li><span class="step">4</span>Pulsa <kbd>F5</kbd> para ejecutar.</li>
+          <li><span class="step">1</span><span data-i18n-html="install.step1"></span></li>
+          <li><span class="step">2</span><span data-i18n-html="install.step2"></span></li>
+          <li><span class="step">3</span><span data-i18n-html="install.step3"></span></li>
+          <li><span class="step">4</span><span data-i18n-html="install.step4"></span></li>
         </ol>
-        <pre class="snippet" id="snippet-1"><button class="copy-mini" data-copy="snippet-1">copiar</button># Clona el repositorio y ejecuta:
-git clone https://github.com/TU_USUARIO/view-url.git
+        <pre class="snippet" id="snippet-1"><button class="copy-mini" data-copy="snippet-1" data-i18n="btn.copy_lc">copiar</button>git clone https://github.com/TU_USUARIO/view-url.git
 cd view-url
 python view_url.py</pre>
       </div>
 
       <div class="card">
-        <h3>🌐 Demo web (esta página)</h3>
-        <p>Funciona directamente en el navegador. Para saltar las restricciones CORS usa un proxy público.</p>
+        <h3 data-i18n="install.web_title">🌐 Demo web (esta página)</h3>
+        <p data-i18n="install.web_desc">Funciona directamente en el navegador. Para saltar las restricciones CORS usa un proxy público.</p>
         <ul>
-          <li><strong>AllOrigins</strong> — el más estable.</li>
-          <li><strong>CodeTabs</strong> — buena velocidad.</li>
-          <li><strong>corsproxy.io</strong> — alternativa.</li>
+          <li data-i18n-html="install.web_p1"></li>
+          <li data-i18n-html="install.web_p2"></li>
+          <li data-i18n-html="install.web_p3"></li>
         </ul>
-        <p style="margin-top:12px">Si un proxy falla, prueba con otro desde el selector.</p>
-        <pre class="snippet"><button class="copy-mini" data-copy="snippet-2">copiar</button><span id="snippet-2"># Cómo publicar esta página en GitHub Pages
-1. Crea un repo nuevo en GitHub
-2. Sube index.html a la raíz
-3. Settings → Pages → Branch: main / (root)
-4. Espera ~1 min. Tu URL: https://TU_USUARIO.github.io/view-url/</span></pre>
+        <p style="margin-top:12px" data-i18n="install.web_hint">Si un proxy falla, prueba con otro desde el selector.</p>
+        <pre class="snippet"><button class="copy-mini" data-copy="snippet-2" data-i18n="btn.copy_lc">copiar</button><span id="snippet-2"></span></pre>
       </div>
     </div>
 
     <div class="card" style="margin-top:18px">
-      <h3>📄 Código fuente Python</h3>
-      <p>
-        La versión completa del visor de escritorio está en el repositorio.
-        Incluye resaltado de sintaxis, pestañas HTML/CSS/JS, panel de recursos
-        y resumen de metadatos.
-      </p>
-      <pre class="snippet"><button class="copy-mini" data-copy="snippet-3">copiar</button><span id="snippet-3">view-url/
+      <h3 data-i18n="install.src_title">📄 Código fuente Python</h3>
+      <p data-i18n="install.src_desc">La versión completa del visor de escritorio está en el repositorio. Incluye resaltado de sintaxis, pestañas HTML/CSS/JS, panel de recursos y resumen de metadatos.</p>
+      <pre class="snippet">view-url/
 ├── index.html      ← esta página (GitHub Pages)
 ├── view_url.py     ← app de escritorio (Python 3.14)
-└── README.md</span></pre>
+└── README.md</pre>
     </div>
   </section>
 
-  <!-- ══════════════════ FEATURES ══════════════════ -->
+  <!-- ═══ FEATURES ═══ -->
   <section id="features" class="pane" role="tabpanel">
     <div class="features">
       <div class="feature">
         <div class="ic">&lt;/&gt;</div>
-        <h4>Resaltado de sintaxis</h4>
-        <p>HTML, CSS y JavaScript con colores, sin librerías externas.</p>
+        <h4 data-i18n="feat.f1t">Resaltado de sintaxis</h4>
+        <p data-i18n="feat.f1d">HTML, CSS y JavaScript con colores, sin librerías externas.</p>
       </div>
       <div class="feature">
         <div class="ic">{ }</div>
-        <h4>Pestañas separadas</h4>
-        <p>HTML, CSS, JS, recursos e info, cada uno en su propia vista.</p>
+        <h4 data-i18n="feat.f2t">Pestañas separadas</h4>
+        <p data-i18n="feat.f2d">HTML, CSS, JS, recursos e info, cada uno en su propia vista.</p>
       </div>
       <div class="feature">
         <div class="ic">⤓</div>
-        <h4>Descarga y copia</h4>
-        <p>Guarda el código de la pestaña activa o cópialo al portapapeles.</p>
+        <h4 data-i18n="feat.f3t">Descarga y copia</h4>
+        <p data-i18n="feat.f3d">Guarda el código de la pestaña activa o cópialo al portapapeles.</p>
       </div>
       <div class="feature">
         <div class="ic">🔗</div>
-        <h4>Recursos clicables</h4>
-        <p>Lista de hojas de estilo, scripts, imágenes y enlaces.</p>
+        <h4 data-i18n="feat.f4t">Recursos clicables</h4>
+        <p data-i18n="feat.f4d">Lista de hojas de estilo, scripts, imágenes y enlaces.</p>
       </div>
       <div class="feature">
         <div class="ic">⚡</div>
-        <h4>Sin dependencias</h4>
-        <p>Solo biblioteca estándar. Sin <code>pip</code>, sin frameworks.</p>
+        <h4 data-i18n="feat.f5t">Sin dependencias</h4>
+        <p data-i18n-html="feat.f5d">Solo biblioteca estándar. Sin <code>pip</code>, sin frameworks.</p>
       </div>
       <div class="feature">
         <div class="ic">🌍</div>
-        <h4>Doble uso</h4>
-        <p>App de escritorio en Python + demo web para GitHub Pages.</p>
+        <h4 data-i18n="feat.f6t">Tres idiomas</h4>
+        <p data-i18n="feat.f6d">Interfaz en español, inglés y portugués, seleccionable.</p>
       </div>
     </div>
   </section>
 
-  <!-- ══════════════════ footer ══════════════════ -->
+  <!-- ═══ footer ═══ -->
   <footer>
-    <div>Hecho con ❤️ usando <strong>Python 3.14</strong> y <strong>HTML/CSS/JS</strong> puro.</div>
+    <div data-i18n-html="footer.text"></div>
     <div class="row">
-      <a href="#demo">Demo</a>
+      <a href="#demo" data-i18n="nav.demo">Demo</a>
       <span>·</span>
-      <a href="#instalar">Instalar</a>
+      <a href="#instalar" data-i18n="nav.install">Instalar</a>
       <span>·</span>
-      <a href="#features">Características</a>
+      <a href="#features" data-i18n="nav.features">Características</a>
       <span>·</span>
       <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
     </div>
@@ -477,13 +379,406 @@ python view_url.py</pre>
 
 <script>
 /* ═══════════════════════════════════════════════════════════════
-   View URL — demo web (sin dependencias externas)
+   i18n — español · English · português
+   ═══════════════════════════════════════════════════════════════ */
+const I18N = {
+  es: {
+    "brand.tagline":   "Mira el código de cualquier web",
+    "nav.demo":        "Demo en vivo",
+    "nav.install":     "Instalar",
+    "nav.features":    "Características",
+    "nav.github":      "GitHub ↗",
+
+    "hero.badge":      "Python 3.14 · Solo biblioteca estándar",
+    "hero.t1":         "El código de",
+    "hero.t2":         "cualquier web",
+    "hero.t3":         "en una sola ventana",
+    "hero.lead":       "<strong>View URL</strong> es un visor de código fuente HTML, CSS y JavaScript con resaltado de sintaxis. Pruébalo aquí mismo o descarga la app de escritorio escrita en Python puro.",
+    "hero.cta_demo":   "Probar demo web",
+    "hero.cta_install":"Instalar la app",
+
+    "tabs.demo":       "🌐 Demo en vivo",
+    "tabs.install":    "🐍 Instalar (Python)",
+    "tabs.features":   "✨ Características",
+
+    "url.placeholder": "https://ejemplo.com",
+    "btn.view":        "Ver código",
+    "btn.wrap":        "↵ Ajustar",
+    "btn.unwrap":      "↵ Sin ajuste",
+    "btn.copy":        "Copiar",
+    "btn.copy_lc":     "copiar",
+    "btn.copied":      "✓ copiado",
+    "btn.download":    "Descargar",
+    "btn.open":        "Abrir web ↗",
+    "proxy.none":      "Sin proxy (directo)",
+
+    "status.ready":    "Escribe una URL y pulsa «Ver código».",
+    "status.connecting":"Conectando con {url} …",
+    "status.fetched":  "✔ {n} caracteres. Cargando recursos…",
+    "status.assets":   "Cargando recursos… {i}/{total}",
+    "status.done":     "✔ Listo · {n} caracteres · {css} CSS · {js} JS · {img} imágenes",
+    "status.error":    "✖ Error: {msg} — prueba con otro proxy.",
+    "status.copied":   "✔ Código copiado al portapapeles.",
+    "status.no_code":  "La pestaña actual no contiene código.",
+    "status.nothing":  "No hay nada que descargar.",
+    "status.downloaded":"✔ Descargado: {name}",
+    "status.copy_fail":"No se pudo copiar.",
+    "status.proxy":    "Descargando con {key}…",
+
+    "tab.resources":   "Recursos",
+    "tab.info":        "Info",
+    "tab.html":        "HTML",
+    "tab.css":         "CSS",
+    "tab.js":          "JS",
+
+    "code.placeholder":"// View URL — introduce una dirección arriba y pulsa «Ver código».",
+
+    "empty.page":      "Todavía no se ha cargado ninguna página.",
+    "no.resources":    "No se encontraron recursos.",
+    "no.css":          "/* No se encontró CSS en esta página. */",
+    "no.js":           "/* No se encontró JavaScript en esta página. */",
+
+    "sec.css_ext":     "Hojas de estilo externas",
+    "sec.css_inline":  "Estilos en línea",
+    "sec.js_ext":      "Scripts externos",
+    "sec.js_inline":   "Scripts en línea",
+    "sec.images":      "Imágenes",
+    "sec.links":       "Enlaces",
+    "sec.meta":        "Metadatos",
+
+    "info.summary":    "Resumen de {host}",
+    "info.url":        "URL",
+    "info.title":      "Título",
+    "info.no_title":   "(sin título)",
+    "info.size":       "Tamaño del HTML",
+    "info.chars":      "{n} caracteres",
+    "info.lines":      "Líneas de HTML",
+    "info.proxy":      "Proxy usado",
+    "info.css_ext":    "CSS externo",
+    "info.css_inline": "CSS en línea",
+    "info.js_ext":     "JS externo",
+    "info.js_inline":  "JS en línea",
+    "info.images":     "Imágenes",
+    "info.links":      "Enlaces únicos",
+    "info.metas":      "Etiquetas meta",
+
+    "install.py_title":"🐍 App de escritorio (Python 3.14)",
+    "install.py_desc": "Visor nativo con Tkinter. Sin dependencias externas, sin <code>pip install</code>.",
+    "install.step1":   "Instala <strong>Python 3.14</strong> desde <a href=\"https://www.python.org/downloads/\" target=\"_blank\" rel=\"noopener\">python.org</a>.",
+    "install.step2":   "Guarda el archivo <code>view_url.py</code> en tu equipo.",
+    "install.step3":   "Abre <strong>IDLE</strong> → <kbd>File</kbd> → <kbd>Open…</kbd>.",
+    "install.step4":   "Pulsa <kbd>F5</kbd> para ejecutar.",
+    "install.web_title":"🌐 Demo web (esta página)",
+    "install.web_desc": "Funciona directamente en el navegador. Para saltar las restricciones CORS usa un proxy público.",
+    "install.web_p1":  "<strong>AllOrigins</strong> — el más estable.",
+    "install.web_p2":  "<strong>CodeTabs</strong> — buena velocidad.",
+    "install.web_p3":  "<strong>corsproxy.io</strong> — alternativa.",
+    "install.web_hint":"Si un proxy falla, prueba con otro desde el selector.",
+    "install.src_title":"📄 Código fuente Python",
+    "install.src_desc": "La versión completa del visor de escritorio está en el repositorio. Incluye resaltado de sintaxis, pestañas HTML/CSS/JS, panel de recursos y resumen de metadatos.",
+
+    "feat.f1t":        "Resaltado de sintaxis",
+    "feat.f1d":        "HTML, CSS y JavaScript con colores, sin librerías externas.",
+    "feat.f2t":        "Pestañas separadas",
+    "feat.f2d":        "HTML, CSS, JS, recursos e info, cada uno en su propia vista.",
+    "feat.f3t":        "Descarga y copia",
+    "feat.f3d":        "Guarda el código de la pestaña activa o cópialo al portapapeles.",
+    "feat.f4t":        "Recursos clicables",
+    "feat.f4d":        "Lista de hojas de estilo, scripts, imágenes y enlaces.",
+    "feat.f5t":        "Sin dependencias",
+    "feat.f5d":        "Solo biblioteca estándar. Sin <code>pip</code>, sin frameworks.",
+    "feat.f6t":        "Tres idiomas",
+    "feat.f6d":        "Interfaz en español, inglés y portugués, seleccionable.",
+
+    "footer.text":     "Hecho con ❤️ usando <strong>Python 3.14</strong> y <strong>HTML/CSS/JS</strong> puro.",
+    "snippet.publish": "# Cómo publicar esta página en GitHub Pages\n1. Crea un repo nuevo en GitHub\n2. Sube index.html a la raíz\n3. Settings → Pages → Branch: main / (root)\n4. Espera ~1 min. Tu URL: https://TU_USUARIO.github.io/view-url/",
+  },
+
+  en: {
+    "brand.tagline":   "See the code of any website",
+    "nav.demo":        "Live demo",
+    "nav.install":     "Install",
+    "nav.features":    "Features",
+    "nav.github":      "GitHub ↗",
+
+    "hero.badge":      "Python 3.14 · Standard library only",
+    "hero.t1":         "The code of",
+    "hero.t2":         "any website",
+    "hero.t3":         "in a single window",
+    "hero.lead":       "<strong>View URL</strong> is a source code viewer for HTML, CSS and JavaScript with syntax highlighting. Try it right here or download the desktop app written in pure Python.",
+    "hero.cta_demo":   "Try the web demo",
+    "hero.cta_install":"Install the app",
+
+    "tabs.demo":       "🌐 Live demo",
+    "tabs.install":    "🐍 Install (Python)",
+    "tabs.features":   "✨ Features",
+
+    "url.placeholder": "https://example.com",
+    "btn.view":        "View code",
+    "btn.wrap":        "↵ Wrap",
+    "btn.unwrap":      "↵ No wrap",
+    "btn.copy":        "Copy",
+    "btn.copy_lc":     "copy",
+    "btn.copied":      "✓ copied",
+    "btn.download":    "Download",
+    "btn.open":        "Open site ↗",
+    "proxy.none":      "No proxy (direct)",
+
+    "status.ready":    "Type a URL and press “View code”.",
+    "status.connecting":"Connecting to {url} …",
+    "status.fetched":  "✔ {n} characters. Loading assets…",
+    "status.assets":   "Loading assets… {i}/{total}",
+    "status.done":     "✔ Ready · {n} characters · {css} CSS · {js} JS · {img} images",
+    "status.error":    "✖ Error: {msg} — try another proxy.",
+    "status.copied":   "✔ Code copied to clipboard.",
+    "status.no_code":  "The current tab has no code.",
+    "status.nothing":  "Nothing to download.",
+    "status.downloaded":"✔ Downloaded: {name}",
+    "status.copy_fail":"Could not copy.",
+    "status.proxy":    "Downloading with {key}…",
+
+    "tab.resources":   "Resources",
+    "tab.info":        "Info",
+    "tab.html":        "HTML",
+    "tab.css":         "CSS",
+    "tab.js":          "JS",
+
+    "code.placeholder":"// View URL — type an address above and press “View code”.",
+
+    "empty.page":      "No page has been loaded yet.",
+    "no.resources":    "No resources found.",
+    "no.css":          "/* No CSS found on this page. */",
+    "no.js":           "/* No JavaScript found on this page. */",
+
+    "sec.css_ext":     "External stylesheets",
+    "sec.css_inline":  "Inline styles",
+    "sec.js_ext":      "External scripts",
+    "sec.js_inline":   "Inline scripts",
+    "sec.images":      "Images",
+    "sec.links":       "Links",
+    "sec.meta":        "Metadata",
+
+    "info.summary":    "Summary of {host}",
+    "info.url":        "URL",
+    "info.title":      "Title",
+    "info.no_title":   "(no title)",
+    "info.size":       "HTML size",
+    "info.chars":      "{n} characters",
+    "info.lines":      "HTML lines",
+    "info.proxy":      "Proxy used",
+    "info.css_ext":    "External CSS",
+    "info.css_inline": "Inline CSS",
+    "info.js_ext":     "External JS",
+    "info.js_inline":  "Inline JS",
+    "info.images":     "Images",
+    "info.links":      "Unique links",
+    "info.metas":      "Meta tags",
+
+    "install.py_title":"🐍 Desktop app (Python 3.14)",
+    "install.py_desc": "Native viewer with Tkinter. No external dependencies, no <code>pip install</code>.",
+    "install.step1":   "Install <strong>Python 3.14</strong> from <a href=\"https://www.python.org/downloads/\" target=\"_blank\" rel=\"noopener\">python.org</a>.",
+    "install.step2":   "Save the file <code>view_url.py</code> to your computer.",
+    "install.step3":   "Open <strong>IDLE</strong> → <kbd>File</kbd> → <kbd>Open…</kbd>.",
+    "install.step4":   "Press <kbd>F5</kbd> to run.",
+    "install.web_title":"🌐 Web demo (this page)",
+    "install.web_desc": "Runs straight in the browser. A public proxy bypasses CORS restrictions.",
+    "install.web_p1":  "<strong>AllOrigins</strong> — most stable.",
+    "install.web_p2":  "<strong>CodeTabs</strong> — fast.",
+    "install.web_p3":  "<strong>corsproxy.io</strong> — alternative.",
+    "install.web_hint":"If a proxy fails, try another one from the selector.",
+    "install.src_title":"📄 Python source code",
+    "install.src_desc": "The full desktop viewer is in the repository. It includes syntax highlighting, HTML/CSS/JS tabs, resources panel and metadata summary.",
+
+    "feat.f1t":        "Syntax highlighting",
+    "feat.f1d":        "HTML, CSS and JavaScript with colors, no external libraries.",
+    "feat.f2t":        "Separate tabs",
+    "feat.f2d":        "HTML, CSS, JS, resources and info, each in its own view.",
+    "feat.f3t":        "Download & copy",
+    "feat.f3d":        "Save the active tab's code or copy it to the clipboard.",
+    "feat.f4t":        "Clickable resources",
+    "feat.f4d":        "List of stylesheets, scripts, images and links.",
+    "feat.f5t":        "No dependencies",
+    "feat.f5d":        "Standard library only. No <code>pip</code>, no frameworks.",
+    "feat.f6t":        "Three languages",
+    "feat.f6d":        "Interface in Spanish, English and Portuguese, selectable.",
+
+    "footer.text":     "Made with ❤️ using <strong>Python 3.14</strong> and pure <strong>HTML/CSS/JS</strong>.",
+    "snippet.publish": "# How to publish this page on GitHub Pages\n1. Create a new repo on GitHub\n2. Upload index.html to the root\n3. Settings → Pages → Branch: main / (root)\n4. Wait ~1 min. Your URL: https://YOUR_USER.github.io/view-url/",
+  },
+
+  pt: {
+    "brand.tagline":   "Veja o código de qualquer site",
+    "nav.demo":        "Demo ao vivo",
+    "nav.install":     "Instalar",
+    "nav.features":    "Recursos",
+    "nav.github":      "GitHub ↗",
+
+    "hero.badge":      "Python 3.14 · Apenas biblioteca padrão",
+    "hero.t1":         "O código de",
+    "hero.t2":         "qualquer site",
+    "hero.t3":         "em uma única janela",
+    "hero.lead":       "<strong>View URL</strong> é um visualizador de código-fonte HTML, CSS e JavaScript com realce de sintaxe. Teste aqui mesmo ou baixe o aplicativo de desktop escrito em Python puro.",
+    "hero.cta_demo":   "Testar demo web",
+    "hero.cta_install":"Instalar o app",
+
+    "tabs.demo":       "🌐 Demo ao vivo",
+    "tabs.install":    "🐍 Instalar (Python)",
+    "tabs.features":   "✨ Recursos",
+
+    "url.placeholder": "https://exemplo.com",
+    "btn.view":        "Ver código",
+    "btn.wrap":        "↵ Ajustar",
+    "btn.unwrap":      "↵ Sem ajuste",
+    "btn.copy":        "Copiar",
+    "btn.copy_lc":     "copiar",
+    "btn.copied":      "✓ copiado",
+    "btn.download":    "Baixar",
+    "btn.open":        "Abrir site ↗",
+    "proxy.none":      "Sem proxy (direto)",
+
+    "status.ready":    "Digite uma URL e pressione «Ver código».",
+    "status.connecting":"Conectando a {url} …",
+    "status.fetched":  "✔ {n} caracteres. Carregando recursos…",
+    "status.assets":   "Carregando recursos… {i}/{total}",
+    "status.done":     "✔ Pronto · {n} caracteres · {css} CSS · {js} JS · {img} imagens",
+    "status.error":    "✖ Erro: {msg} — tente outro proxy.",
+    "status.copied":   "✔ Código copiado para a área de transferência.",
+    "status.no_code":  "A aba atual não contém código.",
+    "status.nothing":  "Nada para baixar.",
+    "status.downloaded":"✔ Baixado: {name}",
+    "status.copy_fail":"Não foi possível copiar.",
+    "status.proxy":    "Baixando com {key}…",
+
+    "tab.resources":   "Recursos",
+    "tab.info":        "Info",
+    "tab.html":        "HTML",
+    "tab.css":         "CSS",
+    "tab.js":          "JS",
+
+    "code.placeholder":"// View URL — digite um endereço acima e pressione «Ver código».",
+
+    "empty.page":      "Nenhuma página foi carregada ainda.",
+    "no.resources":    "Nenhum recurso encontrado.",
+    "no.css":          "/* Nenhum CSS encontrado nesta página. */",
+    "no.js":           "/* Nenhum JavaScript encontrado nesta página. */",
+
+    "sec.css_ext":     "Folhas de estilo externas",
+    "sec.css_inline":  "Estilos em linha",
+    "sec.js_ext":      "Scripts externos",
+    "sec.js_inline":   "Scripts em linha",
+    "sec.images":      "Imagens",
+    "sec.links":       "Links",
+    "sec.meta":        "Metadados",
+
+    "info.summary":    "Resumo de {host}",
+    "info.url":        "URL",
+    "info.title":      "Título",
+    "info.no_title":   "(sem título)",
+    "info.size":       "Tamanho do HTML",
+    "info.chars":      "{n} caracteres",
+    "info.lines":      "Linhas de HTML",
+    "info.proxy":      "Proxy usado",
+    "info.css_ext":    "CSS externo",
+    "info.css_inline": "CSS em linha",
+    "info.js_ext":     "JS externo",
+    "info.js_inline":  "JS em linha",
+    "info.images":     "Imagens",
+    "info.links":      "Links únicos",
+    "info.metas":      "Meta tags",
+
+    "install.py_title":"🐍 App de desktop (Python 3.14)",
+    "install.py_desc": "Visualizador nativo com Tkinter. Sem dependências externas, sem <code>pip install</code>.",
+    "install.step1":   "Instale o <strong>Python 3.14</strong> de <a href=\"https://www.python.org/downloads/\" target=\"_blank\" rel=\"noopener\">python.org</a>.",
+    "install.step2":   "Salve o arquivo <code>view_url.py</code> no seu computador.",
+    "install.step3":   "Abra o <strong>IDLE</strong> → <kbd>File</kbd> → <kbd>Open…</kbd>.",
+    "install.step4":   "Pressione <kbd>F5</kbd> para executar.",
+    "install.web_title":"🌐 Demo web (esta página)",
+    "install.web_desc": "Funciona direto no navegador. Um proxy público contorna as restrições de CORS.",
+    "install.web_p1":  "<strong>AllOrigins</strong> — mais estável.",
+    "install.web_p2":  "<strong>CodeTabs</strong> — rápido.",
+    "install.web_p3":  "<strong>corsproxy.io</strong> — alternativa.",
+    "install.web_hint":"Se um proxy falhar, tente outro no seletor.",
+    "install.src_title":"📄 Código-fonte Python",
+    "install.src_desc": "A versão completa do visualizador está no repositório. Inclui realce de sintaxe, abas HTML/CSS/JS, painel de recursos e resumo de metadados.",
+
+    "feat.f1t":        "Realce de sintaxe",
+    "feat.f1d":        "HTML, CSS e JavaScript com cores, sem bibliotecas externas.",
+    "feat.f2t":        "Abas separadas",
+    "feat.f2d":        "HTML, CSS, JS, recursos e info, cada um na sua própria visão.",
+    "feat.f3t":        "Baixar e copiar",
+    "feat.f3d":        "Salve o código da aba ativa ou copie para a área de transferência.",
+    "feat.f4t":        "Recursos clicáveis",
+    "feat.f4d":        "Lista de folhas de estilo, scripts, imagens e links.",
+    "feat.f5t":        "Sem dependências",
+    "feat.f5d":        "Apenas biblioteca padrão. Sem <code>pip</code>, sem frameworks.",
+    "feat.f6t":        "Três idiomas",
+    "feat.f6d":        "Interface em espanhol, inglês e português, selecionável.",
+
+    "footer.text":     "Feito com ❤️ usando <strong>Python 3.14</strong> e <strong>HTML/CSS/JS</strong> puro.",
+    "snippet.publish": "# Como publicar esta página no GitHub Pages\n1. Crie um novo repositório no GitHub\n2. Envie index.html para a raiz\n3. Settings → Pages → Branch: main / (root)\n4. Aguarde ~1 min. Sua URL: https://SEU_USUARIO.github.io/view-url/",
+  },
+};
+
+const LANGS = ["es", "en", "pt"];
+const STORAGE_KEY = "viewurl.lang";
+
+function detectLang(){
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved && LANGS.includes(saved)) return saved;
+  const nav = (navigator.language || "es").toLowerCase().split("-")[0];
+  return LANGS.includes(nav) ? nav : "es";
+}
+
+let LANG = detectLang();
+const t = (key, kw) => {
+  let s = (I18N[LANG] && I18N[LANG][key]) || (I18N.es[key]) || key;
+  if (kw) for (const k in kw) s = s.replace(new RegExp("\\{"+k+"\\}", "g"), kw[k]);
+  return s;
+};
+
+/* ═══ traducciones aplicadas al DOM ═══ */
+function applyLang(lang){
+  if (!LANGS.includes(lang)) lang = "es";
+  LANG = lang;
+  localStorage.setItem(STORAGE_KEY, lang);
+  document.documentElement.lang = lang;
+  document.getElementById("langSel").value = lang;
+
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    el.textContent = t(el.dataset.i18n);
+  });
+  document.querySelectorAll("[data-i18n-html]").forEach(el => {
+    el.innerHTML = t(el.dataset.i18nHtml);
+  });
+  document.querySelectorAll("[data-i18n-attr]").forEach(el => {
+    el.dataset.i18nAttr.split(",").forEach(pair => {
+      const [attr, key] = pair.split(":");
+      if (attr && key) el.setAttribute(attr.trim(), t(key.trim()));
+    });
+  });
+
+  // textos dinámicos
+  const pre = document.getElementById("code");
+  if (pre && !pre.querySelector(".c-com") === false && !state.html) {
+    pre.innerHTML = '<span class="c-com">' + t("code.placeholder") + '</span>';
+  }
+  const snip2 = document.getElementById("snippet-2");
+  if (snip2) snip2.textContent = t("snippet.publish");
+  const wrapBtn = document.getElementById("wrapBtn");
+  if (wrapBtn) wrapBtn.textContent = state.wrap ? t("btn.unwrap") : t("btn.wrap");
+
+  // re-render si hay contenido cargado
+  if (state.html) { render(); }
+  else { setStatus("status.ready"); }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   View URL — demo web
    ═══════════════════════════════════════════════════════════════ */
 const $  = s => document.querySelector(s);
 const $$ = s => Array.from(document.querySelectorAll(s));
 const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
-/* ── proxies CORS ── */
 const PROXIES = {
   allorigins: u => 'https://api.allorigins.win/raw?url=' + encodeURIComponent(u),
   codetabs:   u => 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(u),
@@ -494,7 +789,6 @@ const MAX_ASSETS = 12;
 const TIMEOUT    = 20000;
 const MAX_HL     = 900000;
 
-/* ── estado ── */
 const state = {
   url:'', html:'', proxyKey:'allorigins',
   cssLinks:[], inlineStyles:[], jsLinks:[], inlineScripts:[],
@@ -502,7 +796,7 @@ const state = {
   assets:{}, tab:'html', wrap:false
 };
 
-/* ═══ pestañas de la página (demo / instalar / features) ═══ */
+/* pestañas superiores */
 $$('.tabs > button[data-pane]').forEach(b => {
   b.addEventListener('click', () => {
     $$('.tabs > button[data-pane]').forEach(x => x.classList.toggle('active', x === b));
@@ -510,29 +804,29 @@ $$('.tabs > button[data-pane]').forEach(b => {
   });
 });
 
-/* ═══ pestañas de la demo ═══ */
+/* pestañas de la demo */
 $$('.demo-tabs button[data-tab]').forEach(b => {
   b.addEventListener('click', () => { state.tab = b.dataset.tab; render(); });
 });
 
-/* ═══ botones copiar de la sección Instalar ═══ */
+/* selector de idioma */
+document.getElementById("langSel").addEventListener("change", e => applyLang(e.target.value));
+
+/* botones copiar de la sección Instalar */
 $$('.copy-mini').forEach(btn => {
   btn.addEventListener('click', async e => {
     e.preventDefault();
-    const t = document.getElementById(btn.dataset.copy);
-    if(!t) return;
+    const tgt = document.getElementById(btn.dataset.copy);
+    if(!tgt) return;
     try {
-      await navigator.clipboard.writeText(t.textContent.trim());
-      const old = btn.textContent;
-      btn.textContent = '✓ copiado';
-      setTimeout(() => btn.textContent = old, 1400);
-    } catch(err) { /* silencioso */ }
+      await navigator.clipboard.writeText(tgt.textContent.trim());
+      btn.textContent = t("btn.copied");
+      setTimeout(() => btn.textContent = t("btn.copy_lc"), 1400);
+    } catch(err) {}
   });
 });
 
-/* ═══════════════════════════════════════════════════════════════
-   RESALTADO DE SINTAXIS
-   ═══════════════════════════════════════════════════════════════ */
+/* ── resaltado ── */
 function paint(src, re, fn){
   re.lastIndex = 0;
   let out = '', last = 0, m;
@@ -560,7 +854,6 @@ const hlHTML = s => paint(s, RE_HTML, m =>
   m[1] ? `<span class="c-com">${esc(m[1])}</span>` :
   m[2] ? `<span class="c-doc">${esc(m[2])}</span>` :
          hlTag(m[3]));
-
 const RE_CSS = /(\/\*[\s\S]*?\*\/)|("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')|(@[\w-]+)|(#[0-9a-fA-F]{3,8}\b)|([\w-]+(?=\s*:))|(\d*\.?\d+(?:px|em|rem|%|vh|vw|s|ms|deg|fr|pt)?)|([{}();:,>+~])/g;
 const hlCSS = s => paint(s, RE_CSS, m =>
   m[1] ? `<span class="c-com">${esc(m[1])}</span>` :
@@ -570,16 +863,14 @@ const hlCSS = s => paint(s, RE_CSS, m =>
   m[5] ? `<span class="c-prop">${esc(m[5])}</span>` :
   m[6] ? `<span class="c-num">${esc(m[6])}</span>` :
          `<span class="c-punc">${esc(m[7])}</span>`);
-
 const RE_JS = /(\/\/[^\n]*|\/\*[\s\S]*?\*\/)|("(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*'|`(?:[^`\\]|\\.)*`)|(\b(?:const|let|var|function|return|if|else|for|while|do|switch|case|break|continue|new|class|extends|super|this|typeof|instanceof|delete|in|of|try|catch|finally|throw|async|await|yield|import|export|from|default|null|undefined|true|false|void|static)\b)|(\b\d+(?:\.\d+)?\b)/g;
 const hlJS = s => paint(s, RE_JS, m =>
   m[1] ? `<span class="c-com">${esc(m[1])}</span>` :
   m[2] ? `<span class="c-str">${esc(m[2])}</span>` :
   m[3] ? `<span class="c-kw">${esc(m[3])}</span>` :
          `<span class="c-num">${esc(m[4])}</span>`);
-
 function highlight(code, lang){
-  if(!code) return '<span class="c-com">(sin contenido)</span>';
+  if(!code) return '<span class="c-com">' + t("code.placeholder") + '</span>';
   if(code.length > MAX_HL) return esc(code);
   try{
     if(lang === 'html') return hlHTML(code);
@@ -589,20 +880,18 @@ function highlight(code, lang){
   return esc(code);
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   PETICIONES
-   ═══════════════════════════════════════════════════════════════ */
+/* ── peticiones ── */
 async function fetchThrough(url, key){
   const build = PROXIES[key] || PROXIES.none;
   const ctrl = new AbortController();
-  const t = setTimeout(() => ctrl.abort(), TIMEOUT);
+  const to = setTimeout(() => ctrl.abort(), TIMEOUT);
   try{
     const res = await fetch(build(url), { signal:ctrl.signal, redirect:'follow' });
     if(!res.ok) throw new Error('HTTP ' + res.status);
     const text = await res.text();
-    if(!text || !text.trim()) throw new Error('respuesta vacía');
+    if(!text || !text.trim()) throw new Error('empty');
     return text;
-  } finally { clearTimeout(t); }
+  } finally { clearTimeout(to); }
 }
 async function fetchWithFallback(url){
   const selected = $('#proxy').value;
@@ -612,20 +901,17 @@ async function fetchWithFallback(url){
   let lastErr = null;
   for(const key of order){
     try{
-      setStatus(`Descargando con ${key}…`, 'load');
+      setStatus(t("status.proxy", { key }));
       return { text: await fetchThrough(url, key), proxyKey: key };
     }catch(e){ lastErr = e; }
   }
-  throw lastErr || new Error('No se pudo descargar');
+  throw lastErr || new Error('failed');
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   ANÁLISIS
-   ═══════════════════════════════════════════════════════════════ */
+/* ── análisis ── */
 function parseDoc(html, base){
   const doc = new DOMParser().parseFromString(html, 'text/html');
   const abs = h => { try { return new URL(h, base).href; } catch(e){ return h; } };
-
   state.title = doc.title || '';
   state.cssLinks = Array.from(doc.querySelectorAll('link[rel~="stylesheet" i][href]'))
     .map(l => ({ href: abs(l.getAttribute('href')), media: l.getAttribute('media') || '' }));
@@ -637,20 +923,17 @@ function parseDoc(html, base){
     .map(s => s.textContent || '').filter(t => t.trim());
   state.images = Array.from(doc.querySelectorAll('img[src]'))
     .map(i => ({ src: abs(i.getAttribute('src')), alt: i.getAttribute('alt') || '' }));
-
   const seen = new Map();
   Array.from(doc.querySelectorAll('a[href]')).forEach(a => {
     const href = abs(a.getAttribute('href'));
     if(!seen.has(href)) seen.set(href, { href, text:(a.textContent||'').trim().slice(0,70) });
   });
   state.links = Array.from(seen.values());
-
   state.metas = Array.from(doc.querySelectorAll('meta[name], meta[property]'))
     .map(m => ({ name:m.getAttribute('name')||m.getAttribute('property'),
                  content:(m.getAttribute('content')||'').slice(0,400) }))
     .filter(m => m.name && m.content);
 }
-
 async function loadAssets(proxyKey){
   const urls = [...new Set([
     ...state.cssLinks.map(l => l.href),
@@ -662,93 +945,88 @@ async function loadAssets(proxyKey){
     try { state.assets[u] = { text: await fetchThrough(u, proxyKey) }; }
     catch(e){ state.assets[u] = { error: e.message }; }
     done++;
-    setStatus(`Cargando recursos… ${done}/${urls.length}`, 'load');
+    setStatus(t("status.assets", { i: done, total: urls.length }));
   }));
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   CONSTRUCCIÓN DE PESTAÑAS
-   ═══════════════════════════════════════════════════════════════ */
+/* ── paneles ── */
 function buildCSS(){
   const parts = [];
   state.inlineStyles.forEach((css,i) => parts.push(
-    `/* ═════════ <style> en línea #${i+1} ═════════ */\n${css.trim()}`));
+    `/* ═════════ <style> #${i+1} ═════════ */\n${css.trim()}`));
   state.cssLinks.forEach(l => {
     const a = state.assets[l.href];
     const head = `/* ═════════ ${l.href} ═════════ */`;
-    if(!a)           parts.push(`${head}\n   (no descargado)`);
+    if(!a)           parts.push(`${head}\n   (not downloaded)`);
     else if(a.error) parts.push(`${head}\n   ERROR: ${a.error}`);
     else             parts.push(`${head}\n${a.text.trim()}`);
   });
-  return parts.join('\n\n\n') || '/* No se encontró CSS en esta página. */';
+  return parts.join('\n\n\n') || t("no.css");
 }
 function buildJS(){
   const parts = [];
   state.inlineScripts.forEach((js,i) => parts.push(
-    `/* ═════════ <script> en línea #${i+1} ═════════ */\n${js.trim()}`));
+    `/* ═════════ <script> #${i+1} ═════════ */\n${js.trim()}`));
   state.jsLinks.forEach(l => {
     const a = state.assets[l.href];
     const head = `/* ═════════ ${l.href} ═════════ */`;
-    if(!a)           parts.push(`${head}\n   (no descargado)`);
+    if(!a)           parts.push(`${head}\n   (not downloaded)`);
     else if(a.error) parts.push(`${head}\n   ERROR: ${a.error}`);
     else             parts.push(`${head}\n${a.text.trim()}`);
   });
-  return parts.join('\n\n\n') || '/* No se encontró JavaScript en esta página. */';
+  return parts.join('\n\n\n') || t("no.js");
 }
-function section(t, items, render){
+function section(title, items, render){
   if(!items.length) return '';
-  return `<h3>${esc(t)} <em>${items.length}</em></h3><ul>${items.map(render).join('')}</ul>`;
+  return `<h3>${esc(title)} <em>${items.length}</em></h3><ul>${items.map(render).join('')}</ul>`;
 }
 function buildResourcesHTML(){
-  if(!state.html) return '<p class="empty">Todavía no se ha cargado ninguna página.</p>';
+  if(!state.html) return `<p class="empty">${t("empty.page")}</p>`;
   const link = (h,x) => `<li><a href="${esc(h)}" target="_blank" rel="noopener">${esc(h)}</a>${x||''}</li>`;
   return [
-    section('Hojas de estilo externas', state.cssLinks, l =>
+    section(t("sec.css_ext"), state.cssLinks, l =>
       link(l.href, l.media ? `<span class="tag">media: ${esc(l.media)}</span>` : '')),
-    section('Estilos en línea', state.inlineStyles, (c,i) =>
+    section(t("sec.css_inline"), state.inlineStyles, (c,i) =>
       `<li><span class="tag">&lt;style&gt; #${i+1}</span> ${esc(c.trim().slice(0,140))}…</li>`),
-    section('Scripts externos', state.jsLinks, l =>
+    section(t("sec.js_ext"), state.jsLinks, l =>
       link(l.href, l.type ? `<span class="tag">${esc(l.type)}</span>` : '')),
-    section('Scripts en línea', state.inlineScripts, (j,i) =>
+    section(t("sec.js_inline"), state.inlineScripts, (j,i) =>
       `<li><span class="tag">inline #${i+1}</span> ${esc(j.trim().slice(0,140))}…</li>`),
-    section('Imágenes', state.images, im =>
+    section(t("sec.images"), state.images, im =>
       link(im.src, im.alt ? `<span class="tag">alt: ${esc(im.alt)}</span>` : '')),
-    section('Enlaces', state.links.slice(0,150), l =>
+    section(t("sec.links"), state.links.slice(0,150), l =>
       link(l.href, l.text ? `<span class="tag">${esc(l.text)}</span>` : ''))
-  ].join('') || '<p class="empty">No se encontraron recursos.</p>';
+  ].join('') || `<p class="empty">${t("no.resources")}</p>`;
 }
 function buildInfoHTML(){
-  if(!state.html) return '<p class="empty">Todavía no se ha cargado ninguna página.</p>';
+  if(!state.html) return `<p class="empty">${t("empty.page")}</p>`;
   let host = '';
   try { host = new URL(state.url).hostname; } catch(e){ host = state.url; }
   const rows = [
-    ['URL', state.url],
-    ['Título', state.title || '(sin título)'],
-    ['Tamaño del HTML', state.html.length.toLocaleString('es-ES') + ' caracteres'],
-    ['Líneas de HTML', state.html.split('\n').length.toLocaleString('es-ES')],
-    ['Proxy usado', state.proxyKey],
-    ['CSS externo', state.cssLinks.length],
-    ['CSS en línea', state.inlineStyles.length],
-    ['JS externo', state.jsLinks.length],
-    ['JS en línea', state.inlineScripts.length],
-    ['Imágenes', state.images.length],
-    ['Enlaces únicos', state.links.length],
-    ['Etiquetas meta', state.metas.length]
+    [t("info.url"),        state.url],
+    [t("info.title"),      state.title || t("info.no_title")],
+    [t("info.size"),       t("info.chars", { n: state.html.length.toLocaleString() })],
+    [t("info.lines"),      state.html.split('\n').length.toLocaleString()],
+    [t("info.proxy"),      state.proxyKey],
+    [t("info.css_ext"),    state.cssLinks.length],
+    [t("info.css_inline"), state.inlineStyles.length],
+    [t("info.js_ext"),     state.jsLinks.length],
+    [t("info.js_inline"),  state.inlineScripts.length],
+    [t("info.images"),     state.images.length],
+    [t("info.links"),      state.links.length],
+    [t("info.metas"),      state.metas.length]
   ];
   const meta = state.metas.length
-    ? `<h3>Metadatos <em>${state.metas.length}</em></h3><dl class="kv">` +
+    ? `<h3>${t("sec.meta")} <em>${state.metas.length}</em></h3><dl class="kv">` +
       state.metas.map(m => `<dt>${esc(m.name)}</dt><dd>${esc(m.content)}</dd>`).join('') + '</dl>'
     : '';
-  return `<h3>Resumen de ${esc(host)}</h3><dl class="kv">` +
+  return `<h3>${esc(t("info.summary", { host }))}</h3><dl class="kv">` +
     rows.map(([k,v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('') +
     '</dl>' + meta;
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   RENDER
-   ═══════════════════════════════════════════════════════════════ */
+/* ── render ── */
 const gutter = $('#gutter'), codeEl = $('#code'), panelEl = $('#panel');
-
 function showCode(code, lang){
   panelEl.hidden = true; codeEl.hidden = false;
   codeEl.classList.toggle('wrap', state.wrap);
@@ -790,13 +1068,11 @@ function currentCode(){
   return null;
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   FLUJO
-   ═══════════════════════════════════════════════════════════════ */
-function setStatus(text, type){
+/* ── flujo ── */
+function setStatus(textOrKey, type){
   const el = $('#status');
   el.className = 'status' + (type ? ' ' + type : '');
-  $('#statusText').textContent = text;
+  $('#statusText').textContent = textOrKey;
 }
 function normalize(raw){
   let u = raw.trim();
@@ -806,60 +1082,58 @@ function normalize(raw){
 }
 async function load(url){
   const btn = $('#go');
-  btn.disabled = true; btn.textContent = 'Cargando…';
-  setStatus('Conectando con ' + url + ' …', 'load');
-
+  btn.disabled = true; btn.textContent = t("btn.loading");
+  setStatus(t("status.connecting", { url }), 'load');
   state.assets = {}; state.html = '';
   state.cssLinks = []; state.inlineStyles = [];
   state.jsLinks = []; state.inlineScripts = [];
   state.images = []; state.links = []; state.metas = []; state.title = '';
-
   try{
     const { text, proxyKey } = await fetchWithFallback(url);
     state.url = url; state.html = text; state.proxyKey = proxyKey;
     $('#openBtn').href = url; $('#openBtn').hidden = false;
     try{ parseDoc(text, url); }catch(e){}
     state.tab = 'html'; render();
-    setStatus(`✔ ${text.length.toLocaleString('es-ES')} caracteres. Cargando recursos…`, 'ok');
+    setStatus(t("status.fetched", { n: text.length.toLocaleString() }), 'ok');
     await loadAssets(proxyKey); render();
-    setStatus(`✔ Listo · ${text.length.toLocaleString('es-ES')} caracteres · ` +
-      `${state.cssLinks.length + state.inlineStyles.length} CSS · ` +
-      `${state.jsLinks.length + state.inlineScripts.length} JS · ` +
-      `${state.images.length} imágenes`, 'ok');
+    setStatus(t("status.done", {
+      n: text.length.toLocaleString(),
+      css: state.cssLinks.length + state.inlineStyles.length,
+      js:  state.jsLinks.length + state.inlineScripts.length,
+      img: state.images.length
+    }), 'ok');
   }catch(err){
-    setStatus('✖ Error: ' + err.message + ' — prueba con otro proxy.', 'err');
+    setStatus(t("status.error", { msg: err.message }), 'err');
   }finally{
-    btn.disabled = false; btn.textContent = 'Ver código';
+    btn.disabled = false; btn.textContent = t("btn.view");
   }
 }
 
-/* ═══ eventos ═══ */
+/* ── eventos ── */
 $('#go').addEventListener('click', () => {
   const u = normalize($('#url').value);
   if(u) load(u);
 });
 $('#url').addEventListener('keydown', e => { if(e.key === 'Enter') $('#go').click(); });
-
 codeEl.addEventListener('scroll', () => {
   if(!gutter.hidden) gutter.scrollTop = codeEl.scrollTop;
 });
-
 $('#wrapBtn').addEventListener('click', () => {
   state.wrap = !state.wrap;
-  $('#wrapBtn').textContent = state.wrap ? '↵ Sin ajuste' : '↵ Ajustar';
+  $('#wrapBtn').textContent = state.wrap ? t("btn.unwrap") : t("btn.wrap");
   render();
 });
 $('#copyBtn').addEventListener('click', async () => {
   const c = currentCode();
-  if(!c) return setStatus('La pestaña actual no contiene código.', 'err');
+  if(!c) return setStatus(t("status.no_code"), 'err');
   try{
     await navigator.clipboard.writeText(c.code || '');
-    setStatus('✔ Código copiado al portapapeles.', 'ok');
-  }catch(e){ setStatus('No se pudo copiar.', 'err'); }
+    setStatus(t("status.copied"), 'ok');
+  }catch(e){ setStatus(t("status.copy_fail"), 'err'); }
 });
 $('#dlBtn').addEventListener('click', () => {
   const c = currentCode();
-  if(!c || !c.code) return setStatus('No hay nada que descargar.', 'err');
+  if(!c || !c.code) return setStatus(t("status.nothing"), 'err');
   let name = 'viewurl';
   try{ name = new URL(state.url).hostname.replace(/[^\w.-]/g,'_'); }catch(e){}
   const blob = new Blob([c.code], { type:'text/plain;charset=utf-8' });
@@ -868,10 +1142,11 @@ $('#dlBtn').addEventListener('click', () => {
   a.download = `${name}.${c.ext}`;
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(() => URL.revokeObjectURL(a.href), 4000);
-  setStatus('✔ Descargado: ' + a.download, 'ok');
+  setStatus(t("status.downloaded", { name: a.download }), 'ok');
 });
 
-/* render inicial */
+/* ── arranque ── */
+applyLang(LANG);
 render();
 </script>
 </body>
