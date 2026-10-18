@@ -44,3 +44,7 @@ Esta versión es una DEMO de View URL, ósea si muestra código de paginas web p
 <img width="1170" height="752" alt="Captura de pantalla 2026-10-04 001626" src="https://github.com/user-attachments/assets/29bec8ab-1be8-425b-9d04-dd7f331a015a" />
 
 ### Truco: en el navegador puedes hacer click en **Click derecho > Ver codigo fuente de la pagina**
+
+## Porque en la DEMO no pueden mostrar paginas grandes y la Python si?
+
+Porque la Demo corre en el navegador, y en el navegador existen reglas de seguridad estrictas llamadas **CORS** y eso hace que se impide que se muestre el codigo, por lo contrario en Python no hay **CORS**, porque la de Python NO corre en el navegador
